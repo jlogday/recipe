@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: recipe
+
+    datasource:
+        platform: postgres
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:51846/postgres
+        username: myuser
+        password: secret
