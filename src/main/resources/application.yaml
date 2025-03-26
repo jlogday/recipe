@@ -3,8 +3,8 @@ spring:
         name: recipe
 
     datasource:
-        platform: postgres
-        driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:51846/postgres
-        username: myuser
+        platform: mariadb
+        driverClassName: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://localhost:3306/recipe
+        username: root
         password: secret
