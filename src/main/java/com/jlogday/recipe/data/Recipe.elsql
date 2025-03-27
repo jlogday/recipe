@@ -1,0 +1,15 @@
+@NAME(RecipeFields)
+  id, created, updated, name, description
+
+@NAME(ALL_RECIPES)
+  select @INCLUDE(RecipeFields)
+  from recipe
+
+@NAME(FIND_BY_ID)
+  select @INCLUDE(RecipeFields)
+  from recipe
+  where id = :id
+  
+ @NAME(SAVE_RECIPE)
+   insert into recipe(created, updated, name, description)
+   values(:created, :updated, :name, :description)
