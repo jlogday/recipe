@@ -1,6 +1,5 @@
 package com.jlogday.recipe;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 import org.springframework.context.annotation.Bean;
@@ -17,6 +16,8 @@ public class RecipeApplicationConfig {
 
     @Bean
     public RouterFunction<ServerResponse> route(RecipeHandler handler) {
-        return RouterFunctions.route(GET("/recipe").and(accept(MediaType.APPLICATION_JSON)), handler::recipe);
+        return RouterFunctions.route()
+            .GET("/recipes/{id}", accept(MediaType.APPLICATION_JSON), handler::getRecipe)
+            .build();
     }
 }

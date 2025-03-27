@@ -2,7 +2,9 @@ package com.jlogday.recipe.data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,13 +45,13 @@ public class RecipeRepository {
         return keyHolder.getKey().intValue();
     }
 
-    public Recipe findById(int id) {
+    public Optional<Recipe> findById(int id) {
         var params = new MapSqlParameterSource().addValue("id", id);
-        return jdbc.queryForObject(getSql(Name.FIND_BY_ID),
+        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_ID),
                 params,
                 (rs, row) -> Recipe.builder().id(rs.getInt("id")).created(rs.getTimestamp("created").toLocalDateTime())
                 .updated(rs.getTimestamp("updated").toLocalDateTime()).name(rs.getString("name"))
-                .description(rs.getString("description")).build());
+                .description(rs.getString("description")).build()));
     }
 
     public List<Recipe> findAll() {
