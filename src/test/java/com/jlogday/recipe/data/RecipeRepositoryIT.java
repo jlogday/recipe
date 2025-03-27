@@ -27,9 +27,15 @@ public class RecipeRepositoryIT {
     @Test
     void createAndLoad() {
         var recipe = Instancio.create(Recipe.class);
-        repo.save(recipe);
-        var list = repo.findAll();
-        log.info("loaded: {}", list);
+        int id = repo.insert(recipe);
+        var loaded = repo.findById(id);
+        log.info("loaded: {}", loaded);
+    }
+
+    @Test
+    void load() {
+        var recipe = repo.findById(1);
+        log.info("loaded: {}", recipe);
     }
 
 }

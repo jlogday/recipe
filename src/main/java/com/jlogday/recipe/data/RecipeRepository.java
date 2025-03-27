@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.opengamma.elsql.ElSql;
@@ -20,26 +21,47 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RecipeRepository {
     private enum Name {
-        ALL_RECIPES, FIND_BY_ID, SAVE_RECIPE,
+        ALL_RECIPES,
+        FIND_BY_ID,
+        SAVE_RECIPE,
     }
 
     private final NamedParameterJdbcTemplate jdbc;
 
     private static final ElSql elsql = ElSql.of(ElSqlConfig.MYSQL, Recipe.class);
 
-    public void save(Recipe recipe) {
-        log.debug("saving recipe: {}", recipe);
+    public int insert(Recipe recipe) {
         final var now = LocalDateTime.now();
-        var params = new MapSqlParameterSource().addValue("created", now).addValue("updated", now)
-                .addValue("name", recipe.getName()).addValue("description", recipe.getDescription());
-        int count = jdbc.update(elsql.getSql(Name.SAVE_RECIPE.toString()), params);
+        var params = new MapSqlParameterSource()
+                .addValue("created", now)
+                .addValue("updated", now)
+                .addValue("name", recipe.getName())
+                .addValue("description", recipe.getDescription());
+        var keyHolder = new GeneratedKeyHolder();
+        int count = jdbc.update(getSql(Name.SAVE_RECIPE), params, keyHolder);
         log.info("updated {} rows", count);
+        return keyHolder.getKey().intValue();
+    }
+
+    public Recipe findById(int id) {
+        var params = new MapSqlParameterSource().addValue("id", id);
+        return jdbc.queryForObject(getSql(Name.FIND_BY_ID),
+                params,
+                (rs, row) -> Recipe.builder().id(rs.getInt("id")).created(rs.getTimestamp("created").toLocalDateTime())
+                .updated(rs.getTimestamp("updated").toLocalDateTime()).name(rs.getString("name"))
+                .description(rs.getString("description")).build());
     }
 
     public List<Recipe> findAll() {
-        return jdbc.query(elsql.getSql(Name.ALL_RECIPES.toString()),
+        return jdbc.query(getSql(Name.ALL_RECIPES),
                 (rs, row) -> Recipe.builder().id(rs.getInt("id")).created(rs.getTimestamp("created").toLocalDateTime())
                         .updated(rs.getTimestamp("updated").toLocalDateTime()).name(rs.getString("name"))
                         .description(rs.getString("description")).build());
+    }
+
+    private String getSql(Name name) {
+        var sql = elsql.getSql(name.toString());
+        log.debug("{} : {}", name, sql);
+        return sql;
     }
 }
