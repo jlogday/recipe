@@ -42,3 +42,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('copyElsql', Copy) {
+    from 'src/main/java'
+    include '**/*.elsql'
+    into layout.buildDirectory.dir('classes/java/main')
+}
+
+compileJava.dependsOn copyElsql
