@@ -6,8 +6,12 @@ title: Recipes
 ---
 erDiagram
     RECIPE }|..|{ MEASURED_INGREDIENT : has
+    RECIPE ||..|{ IMAGE : has
+    RECIPE ||..|{ URL : has
     RECIPE {
         int id
+        string category
+        string name
         string description
         string instructions
     }
@@ -24,4 +28,17 @@ erDiagram
         int INGREDIENT FK
         string quantity
     }
+
+    IMAGE {
+        int id
+        int recipe_id FK
+        string path
+    }
+
+    URL {
+        int id
+        int recipe_id FK
+        string url
+    }
+
 ```
