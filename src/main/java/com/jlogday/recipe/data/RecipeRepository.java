@@ -37,6 +37,7 @@ public class RecipeRepository {
         var params = new MapSqlParameterSource()
                 .addValue("created", now)
                 .addValue("updated", now)
+                .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
                 .addValue("description", recipe.getDescription());
         var keyHolder = new GeneratedKeyHolder();
@@ -49,16 +50,24 @@ public class RecipeRepository {
         var params = new MapSqlParameterSource().addValue("id", id);
         return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_ID),
                 params,
-                (rs, row) -> Recipe.builder().id(rs.getInt("id")).created(rs.getTimestamp("created").toLocalDateTime())
-                .updated(rs.getTimestamp("updated").toLocalDateTime()).name(rs.getString("name"))
-                .description(rs.getString("description")).build()));
+                (rs, row) -> Recipe.builder()
+                  .id(rs.getInt("id"))
+                  .created(rs.getTimestamp("created").toLocalDateTime())
+                  .updated(rs.getTimestamp("updated").toLocalDateTime())
+                  .category(rs.getString("category"))
+                  .name(rs.getString("name"))
+                  .description(rs.getString("description")).build()));
     }
 
     public List<Recipe> findAll() {
         return jdbc.query(getSql(Name.ALL_RECIPES),
-                (rs, row) -> Recipe.builder().id(rs.getInt("id")).created(rs.getTimestamp("created").toLocalDateTime())
-                        .updated(rs.getTimestamp("updated").toLocalDateTime()).name(rs.getString("name"))
-                        .description(rs.getString("description")).build());
+                (rs, row) -> Recipe.builder()
+                  .id(rs.getInt("id"))
+                  .created(rs.getTimestamp("created").toLocalDateTime())
+                  .updated(rs.getTimestamp("updated").toLocalDateTime())
+                  .category(rs.getString("category"))
+                  .name(rs.getString("name"))
+                  .description(rs.getString("description")).build());
     }
 
     private String getSql(Name name) {

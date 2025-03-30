@@ -11,8 +11,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class Recipe extends Base {
-    private String category;
-    private String name;
-    private String description;
+public class MeasuredIngredient extends Base {
+    private int recipeId;
+    private String quantity;
 }
