@@ -3,6 +3,7 @@ package com.jlogday.recipe.data;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,7 +25,8 @@ public class RecipeRepository {
     private enum Name {
         ALL_RECIPES,
         FIND_BY_ID,
-        SAVE_RECIPE,
+        INSERT_RECIPE,
+        UPDATE_RECIPE,
     }
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -38,9 +40,30 @@ public class RecipeRepository {
                 .addValue("description", recipe.getDescription())
                 .addValue("instructions", recipe.getInstructions());
         var keyHolder = new GeneratedKeyHolder();
-        int count = jdbc.update(getSql(Name.SAVE_RECIPE), params, keyHolder);
-        log.info("updated {} rows", count);
+        int count = jdbc.update(getSql(Name.INSERT_RECIPE), params, keyHolder);
+        if (count != 1) {
+            log.error("error inserting record");
+            throw new IncorrectResultSizeDataAccessException(1, count);
+        }
+
         return keyHolder.getKey().intValue();
+    }
+
+    public int update(Recipe recipe) {
+        var params = new MapSqlParameterSource()
+                .addValue("id", recipe.getId())
+                .addValue("version", recipe.getVersion())
+                .addValue("category", recipe.getCategory())
+                .addValue("name", recipe.getName())
+                .addValue("description", recipe.getDescription())
+                .addValue("instructions", recipe.getInstructions());
+        int count = jdbc.update(getSql(Name.UPDATE_RECIPE), params);
+        if (count != 1) {
+            log.error("error updating record");
+            throw new IncorrectResultSizeDataAccessException(1, count);
+        }
+
+        return count;
     }
 
     public Optional<Recipe> findById(int id) {

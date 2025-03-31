@@ -7,6 +7,18 @@
   from recipe
   where id = :id
   
-@NAME(SAVE_RECIPE)
+@NAME(INSERT_RECIPE)
   insert into recipe(category, name, description, instructions)
   values(:category, :name, :description, :instructions)
+
+@NAME(UPDATE_RECIPE)
+  update recipe set
+    version = version + 1,
+    updated = now(6),
+    category = :category,
+    name = :name,
+    description = :description,
+    instructions = :instructions
+  where id = :id
+  and version = :version
+    

@@ -42,5 +42,28 @@ public class RecipeRepositoryIT {
         assertThat(loaded.getInstructions()).isEqualTo(recipe.getInstructions());
     }
 
+    @Test
+    void update() {
+        var recipe = Instancio.create(Recipe.class);
+        log.info("generated: {}", recipe);
+        int id = repo.insert(recipe);
+        var loaded = repo.findById(id).orElseThrow();
+        log.info("loaded: {}", loaded);
+
+        loaded.setName("Updated Name");
+        repo.update(loaded);
+
+        var updated = repo.findById(id).orElseThrow();
+        log.info("updated: {}", updated);
+
+        assertThat(updated.getCreated()).isEqualTo(loaded.getCreated());
+        assertThat(updated.getUpdated()).isAfter(loaded.getUpdated());
+        //assertThat(updated.getVersion()).isGreaterThan(loaded.getVersion());
+        assertThat(updated.getCategory()).isEqualTo(recipe.getCategory());
+        assertThat(updated.getName()).isNotEqualTo(recipe.getName());
+        assertThat(updated.getName()).isEqualTo("Updated Name");
+        assertThat(updated.getDescription()).isEqualTo(recipe.getDescription());
+        assertThat(updated.getInstructions()).isEqualTo(recipe.getInstructions());
+    }
 
 }
