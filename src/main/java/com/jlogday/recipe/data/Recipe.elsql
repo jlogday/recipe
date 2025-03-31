@@ -1,15 +1,12 @@
-@NAME(CommonFields)
-  created, updated, category, name, description
-
 @NAME(ALL_RECIPES)
-  select id, @INCLUDE(CommonFields)
+  select id, version, created, updated, category, name, description, instructions
   from recipe
 
 @NAME(FIND_BY_ID)
-  select id, @INCLUDE(CommonFields)
+  select id, version, created, updated, category, name, description, instructions
   from recipe
   where id = :id
   
 @NAME(SAVE_RECIPE)
-  insert into recipe(@INCLUDE(CommonFields))
-  values(:created, :updated, :category, :name, :description)
+  insert into recipe(category, name, description, instructions)
+  values(:category, :name, :description, :instructions)

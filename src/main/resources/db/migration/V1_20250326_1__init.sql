@@ -32,24 +32,23 @@ create table if not exists measured_ingredient (
 );
 create index mi_recipe_id_idx on measured_ingredient(recipe_id);
 
-create table if not exists media (
+create table if not exists link (
     id int not null auto_increment primary key,
     version int not null default 0,
     created timestamp(6) not null default now(6),
     updated timestamp(6) not null default now(6),
     recipe_id int not null,
     type varchar(20) not null,
-    foreign key media_recipe_id_fk (recipe_id) references recipe(id)
+    url varchar(4000) not null,
+    foreign key link_recipe_id_fk (recipe_id) references recipe(id)
 );
-create index media_recipe_id_idx on media(recipe_id);
+create index link_recipe_id_idx on link(recipe_id);
 
 create table if not exists keyword (
     id int not null auto_increment primary key,
     version int not null default 0,
     created timestamp(6) not null default now(6),
     updated timestamp(6) not null default now(6),
-    recipe_id int not null,
-    type varchar(20) not null,
-    foreign key keyword_recipe_id_fk (recipe_id) references recipe(id)
+    keyword varchar(30) not null
 );
-create index keyword_recipe_id_idx on keyword(recipe_id);
+create index keyword_keyword_idx on keyword(keyword);

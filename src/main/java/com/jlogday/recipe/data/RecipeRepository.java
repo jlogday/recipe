@@ -1,6 +1,5 @@
 package com.jlogday.recipe.data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +32,11 @@ public class RecipeRepository {
     private static final ElSql elsql = ElSql.of(ElSqlConfig.MYSQL, Recipe.class);
 
     public int insert(Recipe recipe) {
-        final var now = LocalDateTime.now();
         var params = new MapSqlParameterSource()
-                .addValue("created", now)
-                .addValue("updated", now)
                 .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
-                .addValue("description", recipe.getDescription());
+                .addValue("description", recipe.getDescription())
+                .addValue("instructions", recipe.getInstructions());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.SAVE_RECIPE), params, keyHolder);
         log.info("updated {} rows", count);
@@ -56,7 +53,8 @@ public class RecipeRepository {
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
                   .category(rs.getString("category"))
                   .name(rs.getString("name"))
-                  .description(rs.getString("description")).build()));
+                  .description(rs.getString("description"))
+                  .instructions(rs.getString("instructions")).build()));
     }
 
     public List<Recipe> findAll() {
@@ -67,7 +65,8 @@ public class RecipeRepository {
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
                   .category(rs.getString("category"))
                   .name(rs.getString("name"))
-                  .description(rs.getString("description")).build());
+                  .description(rs.getString("description"))
+                  .instructions(rs.getString("instructions")).build());
     }
 
     private String getSql(Name name) {
