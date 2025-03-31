@@ -1,0 +1,55 @@
+package com.jlogday.recipe.data;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.instancio.Instancio;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.ComponentScan;
+
+import lombok.extern.slf4j.Slf4j;
+
+@JdbcTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@ComponentScan(basePackageClasses = IngredientRepository.class)
+@Slf4j
+public class IngredientRepositoryIT {
+    @Autowired
+    private IngredientRepository repo;
+
+    @Test
+    void createAndLoad() {
+        var ingredient = Instancio.create(Ingredient.class);
+        log.info("generated: {}", ingredient);
+        int id = repo.insert(ingredient);
+        var loaded = repo.findById(id).orElseThrow();
+        log.info("loaded: {}", loaded);
+        assertThat(loaded.getId()).isNotNull();
+        assertThat(loaded.getCreated()).isNotNull();
+        assertThat(loaded.getUpdated()).isNotNull();
+        assertThat(loaded.getName()).isEqualTo(ingredient.getName());
+    }
+
+    @Test
+    void findByName() {
+        var ingredient = Ingredient.builder().name("Lime Juice").build();
+        log.info("generated: {}", ingredient);
+        repo.insert(ingredient);
+        var loaded = repo.findByName("Lime Juice").orElseThrow();
+        log.info("loaded: {}", loaded);
+        assertThat(loaded.getId()).isNotNull();
+        assertThat(loaded.getCreated()).isNotNull();
+        assertThat(loaded.getUpdated()).isNotNull();
+        assertThat(loaded.getName()).isEqualTo(ingredient.getName());
+
+        var variant1 = repo.findByName("lime juice").orElseThrow();
+        assertThat(variant1).isEqualTo(loaded);
+
+        var variant2 = repo.findByName("LIME JUICE").orElseThrow();
+        assertThat(variant2).isEqualTo(loaded);
+    }
+
+}

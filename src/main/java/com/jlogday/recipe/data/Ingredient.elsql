@@ -1,0 +1,21 @@
+@NAME(FIND_BY_ID)
+  select id, version, created, updated, name
+  from ingredient
+  where id = :id
+  
+@NAME(INSERT_INGREDIENT)
+  insert into ingredient(name)
+  values(:name)
+
+@NAME(UPDATE_INGREDIENT)
+  update ingredient set
+    version = version + 1,
+    updated = now(6),
+    name = :name
+  where id = :id
+  and version = :version
+
+@NAME(FIND_BY_NAME)
+  select id, version, created, updated, name
+  from ingredient
+  where lower(name) = :name

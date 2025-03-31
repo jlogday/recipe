@@ -72,6 +72,7 @@ public class RecipeRepository {
                 params,
                 (rs, row) -> Recipe.builder()
                   .id(rs.getInt("id"))
+                  .version(rs.getInt("version"))
                   .created(rs.getTimestamp("created").toLocalDateTime())
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
                   .category(rs.getString("category"))
@@ -84,6 +85,7 @@ public class RecipeRepository {
         return jdbc.query(getSql(Name.ALL_RECIPES),
                 (rs, row) -> Recipe.builder()
                   .id(rs.getInt("id"))
+                  .version(rs.getInt("version"))
                   .created(rs.getTimestamp("created").toLocalDateTime())
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
                   .category(rs.getString("category"))

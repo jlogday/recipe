@@ -65,5 +65,4 @@ public class RecipeRepositoryIT {
         assertThat(updated.getDescription()).isEqualTo(recipe.getDescription());
         assertThat(updated.getInstructions()).isEqualTo(recipe.getInstructions());
     }
-
 }
