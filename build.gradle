@@ -13,10 +13,22 @@ java {
 	}
 }
 
+sourceSets {
+    integrationTest {
+        java.srcDir 'src/it/java'
+        resources.srcDir 'src/it/resources'
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.test.compileClasspath
+    }
+}
+
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom runtimeOnly
 }
 
 repositories {
@@ -35,8 +47,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+        testImplementation 'org.junit.jupiter:junit-jupiter'
         testImplementation 'org.instancio:instancio-junit:5.4.0'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	integrationTestCompileOnly 'org.projectlombok:lombok'
+	integrationTestAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
@@ -50,3 +67,21 @@ tasks.register('copyElsql', Copy) {
 }
 
 compileJava.dependsOn copyElsql
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    shouldRunAfter test
+
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed'
+    }
+}
+
+check.dependsOn integrationTest
+
