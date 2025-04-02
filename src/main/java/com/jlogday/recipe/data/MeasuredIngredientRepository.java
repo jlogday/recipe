@@ -21,20 +21,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MeasuredIngredientRepository {
     private enum Name {
-        INSERT_INGREDIENT,
-        UPDATE_INGREDIENT,
+        INSERT,
+        UPDATE,
         FIND_BY_RECIPE_ID
     }
 
     private final NamedParameterJdbcTemplate jdbc;
 
-    private static final ElSql elsql = ElSql.of(ElSqlConfig.MYSQL, Ingredient.class);
+    private static final ElSql elsql = ElSql.of(ElSqlConfig.MYSQL, MeasuredIngredient.class);
 
-    public int insert(Ingredient ingredient) {
+    public int insert(MeasuredIngredient ingredient) {
         var params = new MapSqlParameterSource()
-                .addValue("name", ingredient.getName());
+                .addValue("recipe_id", ingredient.getRecipeId())
+                .addValue("ingredient_id", ingredient.getIngredientId())
+                .addValue("quantity", ingredient.getQuantity());
         var keyHolder = new GeneratedKeyHolder();
-        int count = jdbc.update(getSql(Name.INSERT_INGREDIENT), params, keyHolder);
+        int count = jdbc.update(getSql(Name.INSERT), params, keyHolder);
         if (count != 1) {
             log.error("error inserting record");
             throw new IncorrectResultSizeDataAccessException(1, count);
@@ -43,12 +45,14 @@ public class MeasuredIngredientRepository {
         return keyHolder.getKey().intValue();
     }
 
-    public int update(Ingredient ingredient) {
+    public int update(MeasuredIngredient ingredient) {
         var params = new MapSqlParameterSource()
                 .addValue("id", ingredient.getId())
                 .addValue("version", ingredient.getVersion())
-                .addValue("name", ingredient.getName());
-        int count = jdbc.update(getSql(Name.UPDATE_INGREDIENT), params);
+                .addValue("recipe_id", ingredient.getRecipeId())
+                .addValue("ingredient_id", ingredient.getIngredientId())
+                .addValue("quantity", ingredient.getQuantity());
+        int count = jdbc.update(getSql(Name.UPDATE), params);
         if (count != 1) {
             log.error("error updating record");
             throw new IncorrectResultSizeDataAccessException(1, count);
@@ -57,14 +61,18 @@ public class MeasuredIngredientRepository {
         return count;
     }
 
-    public List<Ingredient> findByRecipeId() {
+    public List<MeasuredIngredient> findByRecipeId(int recipeId) {
+        var params = new MapSqlParameterSource().addValue("recipe_id", recipeId);
         return jdbc.query(getSql(Name.FIND_BY_RECIPE_ID),
-                (rs, row) -> Ingredient.builder()
+                params,
+                (rs, row) -> MeasuredIngredient.builder()
                   .id(rs.getInt("id"))
                   .version(rs.getInt("version"))
                   .created(rs.getTimestamp("created").toLocalDateTime())
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
-                  .name(rs.getString("name"))
+                  .recipeId(rs.getInt("recipe_id"))
+                  .ingredientId(rs.getInt("ingredient_id"))
+                  .quantity(rs.getString("quantity"))
                   .build());
     }
 

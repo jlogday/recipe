@@ -13,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class MeasuredIngredient extends Base {
     private int recipeId;
+    private int ingredientId;
     private String quantity;
 }
