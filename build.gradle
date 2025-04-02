@@ -1,16 +1,16 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.jlogday'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 sourceSets {
@@ -32,55 +32,47 @@ configurations {
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'com.opengamma:elsql:1.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
+        implementation 'com.opengamma:elsql:1.3'
         implementation 'org.flywaydb:flyway-core'
         implementation 'org.flywaydb:flyway-mysql'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
+        compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'io.projectreactor:reactor-test'
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testImplementation 'org.instancio:instancio-junit:5.4.0'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	integrationTestCompileOnly 'org.projectlombok:lombok'
-	integrationTestAnnotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+        integrationTestCompileOnly 'org.projectlombok:lombok'
+        integrationTestAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
-
-tasks.register('copyElsql', Copy) {
-    from 'src/main/java'
-    include '**/*.elsql'
-    into layout.buildDirectory.dir('classes/java/main')
-}
-
-compileJava.dependsOn copyElsql
 
 tasks.register('integrationTest', Test) {
     description = 'Runs integration tests'
-    group = 'verification'
+        group = 'verification'
 
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    shouldRunAfter test
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        shouldRunAfter test
 
-    useJUnitPlatform()
+        useJUnitPlatform()
 
-    testLogging {
-        events 'passed'
-    }
+        testLogging {
+            events 'passed'
+        }
 }
 
 check.dependsOn integrationTest
