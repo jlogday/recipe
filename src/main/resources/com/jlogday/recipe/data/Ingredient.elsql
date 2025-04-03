@@ -6,6 +6,7 @@
 @NAME(INSERT_INGREDIENT)
   insert into ingredient(name)
   values(:name)
+  on duplicate key update id = id
 
 @NAME(UPDATE_INGREDIENT)
   update ingredient set

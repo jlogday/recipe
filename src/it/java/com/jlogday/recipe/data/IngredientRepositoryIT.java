@@ -52,4 +52,13 @@ public class IngredientRepositoryIT {
         assertThat(variant2).isEqualTo(loaded);
     }
 
+    @Test
+    void nameIsCaseInsensitive() {
+        var id = repo.insert(Ingredient.builder().name("Lime Juice").build());
+        int updateId = repo.insert(Ingredient.builder().name("Lime juice").build());
+        assertThat(updateId).isEqualTo(-1);
+        var loaded = repo.findByName("Lime juice").orElseThrow();
+        assertThat(loaded.getId()).isEqualTo(id);
+        assertThat(loaded.getName()).isEqualTo("Lime Juice");
+    }
 }

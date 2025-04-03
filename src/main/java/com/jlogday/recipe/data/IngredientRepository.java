@@ -38,12 +38,17 @@ public class IngredientRepository {
                 .addValue("name", ingredient.getName());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT_INGREDIENT), params, keyHolder);
-        if (count != 1) {
-            log.error("error inserting record");
+        if (count == 0) {
+            log.info("existing record unmodified");
+        } else if (count == 1) {
+            log.info("inserted 1 row");
+        } else if (count == 2) {
+            log.info("updated 1 row");
+        } else {
             throw new IncorrectResultSizeDataAccessException(1, count);
         }
 
-        return keyHolder.getKey().intValue();
+        return Optional.ofNullable(keyHolder.getKey()).map(Number::intValue).orElse(-1);
     }
 
     public int update(Ingredient ingredient) {
