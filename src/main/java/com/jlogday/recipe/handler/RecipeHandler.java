@@ -20,10 +20,12 @@ public class RecipeHandler {
     private final RecipeService recipeService;
 
     public Mono<ServerResponse> getRecipe(ServerRequest request) {
-        int id = Integer.parseInt(request.pathVariable("id"));
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(Recipe.builder().name("Hello").description("Sample Recipe").build()));
+        /*int id = Integer.parseInt(request.pathVariable("name"));
         return recipeService.findById(id)
                 .map(recipe -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(recipe))
-                .orElse(ServerResponse.notFound().build());
+                .orElse(ServerResponse.notFound().build());*/
 
     }
 

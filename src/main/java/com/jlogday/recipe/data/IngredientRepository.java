@@ -1,5 +1,6 @@
 package com.jlogday.recipe.data;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -26,7 +27,8 @@ public class IngredientRepository {
         INSERT_INGREDIENT,
         UPDATE_INGREDIENT,
         FIND_BY_ID,
-        FIND_BY_NAME
+        FIND_BY_NAME,
+        FIND_ALL_BY_NAMES,
     }
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -87,6 +89,18 @@ public class IngredientRepository {
                 .created(rs.getTimestamp("created").toLocalDateTime())
                 .updated(rs.getTimestamp("updated").toLocalDateTime())
                 .name(rs.getString("name")).build()));
+    }
+
+    public List<Ingredient> findAllByNames(List<String> names) {
+        var params = new MapSqlParameterSource().addValue("names", names);
+        return jdbc.query(getSql(Name.FIND_ALL_BY_NAMES),
+                params,
+                (rs, row) -> Ingredient.builder()
+                .id(rs.getInt("id"))
+                .version(rs.getInt("version"))
+                .created(rs.getTimestamp("created").toLocalDateTime())
+                .updated(rs.getTimestamp("updated").toLocalDateTime())
+                .name(rs.getString("name")).build());
     }
 
     private String getSql(Name name) {

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
+import com.jlogday.recipe.IngredientDTO;
 import com.opengamma.elsql.ElSql;
 import com.opengamma.elsql.ElSqlConfig;
 
@@ -25,8 +26,10 @@ public class RecipeRepository {
     private enum Name {
         ALL_RECIPES,
         FIND_BY_ID,
+        FIND_BY_NAME,
         INSERT_RECIPE,
         UPDATE_RECIPE,
+        INGREDIENT_VIEW,
     }
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -81,6 +84,21 @@ public class RecipeRepository {
                   .instructions(rs.getString("instructions")).build()));
     }
 
+    public Optional<Recipe> findByName(String name) {
+        var params = new MapSqlParameterSource().addValue("name", name);
+        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_NAME),
+                params,
+                (rs, row) -> Recipe.builder()
+                  .id(rs.getInt("id"))
+                  .version(rs.getInt("version"))
+                  .created(rs.getTimestamp("created").toLocalDateTime())
+                  .updated(rs.getTimestamp("updated").toLocalDateTime())
+                  .category(rs.getString("category"))
+                  .name(rs.getString("name"))
+                  .description(rs.getString("description"))
+                  .instructions(rs.getString("instructions")).build()));
+    }
+
     public List<Recipe> findAll() {
         return jdbc.query(getSql(Name.ALL_RECIPES),
                 (rs, row) -> Recipe.builder()
@@ -92,6 +110,15 @@ public class RecipeRepository {
                   .name(rs.getString("name"))
                   .description(rs.getString("description"))
                   .instructions(rs.getString("instructions")).build());
+    }
+
+    public List<IngredientDTO> findIngredientsView(int recipeId) {
+        var params = new MapSqlParameterSource().addValue("recipe_id", recipeId);
+        return jdbc.query(getSql(Name.INGREDIENT_VIEW),
+                params,
+                (rs, row) -> IngredientDTO.builder()
+                  .name(rs.getString("name"))
+                  .quantity(rs.getString("quantity")).build());
     }
 
     private String getSql(Name name) {

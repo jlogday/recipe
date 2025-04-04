@@ -19,4 +19,9 @@
 @NAME(FIND_BY_NAME)
   select id, version, created, updated, name
   from ingredient
-  where lower(name) = :name
+  where name = :name
+
+@NAME(FIND_ALL_BY_NAMES)
+  select id, version, created, updated, name
+  from ingredient
+  where name in (:names)

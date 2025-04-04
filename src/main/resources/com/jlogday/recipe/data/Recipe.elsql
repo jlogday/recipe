@@ -6,6 +6,11 @@
   select id, version, created, updated, category, name, description, instructions
   from recipe
   where id = :id
+
+@NAME(FIND_BY_NAME)
+  select id, version, created, updated, category, name, description, instructions
+  from recipe
+  where name = :name
   
 @NAME(INSERT_RECIPE)
   insert into recipe(category, name, description, instructions)
@@ -21,4 +26,9 @@
     instructions = :instructions
   where id = :id
   and version = :version
-    
+  
+@NAME(INGREDIENT_VIEW)
+  select i.name as name, mi.quantity as quantity
+  from measured_ingredient mi
+  inner join ingredient i on mi.ingredient_id = i.id
+  where mi.recipe_id = :recipe_id

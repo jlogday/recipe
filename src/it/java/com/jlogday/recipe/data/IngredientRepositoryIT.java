@@ -2,6 +2,8 @@ package com.jlogday.recipe.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +62,16 @@ public class IngredientRepositoryIT {
         var loaded = repo.findByName("Lime juice").orElseThrow();
         assertThat(loaded.getId()).isEqualTo(id);
         assertThat(loaded.getName()).isEqualTo("Lime Juice");
+    }
+
+
+    @Test
+    void findAllByNames() {
+        var names = List.of("Lime Juice", "Simple Syrup", "Rum");
+        names.forEach(name -> repo.insert(Ingredient.builder().name(name).build()));
+
+        var list = repo.findAllByNames(names);
+        log.info("list: {}", list);
+        assertThat(list).hasSize(3);
     }
 }
