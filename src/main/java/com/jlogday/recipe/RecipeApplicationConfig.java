@@ -17,7 +17,8 @@ public class RecipeApplicationConfig {
     @Bean
     public RouterFunction<ServerResponse> route(RecipeHandler handler) {
         return RouterFunctions.route()
-            .GET("/recipes/{id}", accept(MediaType.APPLICATION_JSON), handler::getRecipeById)
-            .build();
+                .GET("/recipes", accept(MediaType.APPLICATION_JSON), handler::getAllRecipes)
+                .GET("/recipes/{id}", accept(MediaType.APPLICATION_JSON), handler::getRecipeById)
+                .build();
     }
 }

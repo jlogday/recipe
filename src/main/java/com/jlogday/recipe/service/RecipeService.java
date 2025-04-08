@@ -1,5 +1,6 @@
 package com.jlogday.recipe.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -62,6 +63,12 @@ public class RecipeService {
                     .build());
         });
 
+    }
+
+    public List<RecipeDTO> allRecipes() {
+        return recipeRepo.findAll().stream()
+                .map(this::populateRecipe)
+                .toList();
     }
 
     public Optional<RecipeDTO> findRecipe(int id) {

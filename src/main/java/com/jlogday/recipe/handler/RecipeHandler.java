@@ -17,9 +17,10 @@ import reactor.core.publisher.Mono;
 public class RecipeHandler {
     private final RecipeService recipeService;
 
-    /*public Mono<ServerResponse> getAllRecipes() {
-
-    }*/
+    public Mono<ServerResponse> getAllRecipes(ServerRequest request) {
+        var recipes = recipeService.allRecipes();
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(recipes);
+    }
 
     public Mono<ServerResponse> getRecipeById(ServerRequest request) {
         int id = Integer.parseInt(request.pathVariable("id"));
