@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class RecipeDTO {
+    private int id;
     private String category;
     private String name;
     private String description;

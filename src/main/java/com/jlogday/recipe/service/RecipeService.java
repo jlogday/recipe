@@ -34,7 +34,7 @@ public class RecipeService {
 
 
     @Transactional
-    public void createRecipe(RecipeDTO recipe) {
+    public int createRecipe(RecipeDTO recipe) {
         int recipeId = recipeRepo.insert(Recipe.builder()
                 .category(recipe.getCategory())
                 .name(recipe.getName())
@@ -49,12 +49,12 @@ public class RecipeService {
 
         // create a map of ingredient names to existing domain objects
         var map = ingredientRepo.findAllByNames(names).stream()
-                .collect(Collectors.toMap(r -> r.getName(), Function.identity()));
+                .collect(Collectors.toMap(Ingredient::getName, Function.identity()));
 
         // insert each measured ingredient, also inserting the ingredient if it does not already exist
         recipe.getIngredients().forEach(i -> {
             int ingredientId = Optional.ofNullable(map.get(i.getName()))
-                    .map(r -> r.getId())
+                    .map(Ingredient::getId)
                     .orElseGet(() -> ingredientRepo.insert(Ingredient.builder().name(i.getName()).build()));
             measuredIngredientRepo.insert(MeasuredIngredient.builder()
                     .recipeId(recipeId)
@@ -63,32 +63,34 @@ public class RecipeService {
                     .build());
         });
 
+        return recipeId;
     }
 
     public List<RecipeDTO> allRecipes() {
         return recipeRepo.findAll().stream()
-                .map(this::populateRecipe)
+                .map(this::mapRecipe)
                 .toList();
     }
 
     public Optional<RecipeDTO> findRecipe(int id) {
         return recipeRepo.findById(id)
-                .map(this::populateRecipe);
+                .map(this::mapRecipe);
     }
 
     public RecipeDTO fetchRecipe(String name) {
         var recipe = recipeRepo.findByName(name).orElseThrow(); // TODO handle exception
-        return populateRecipe(recipe);
+        return mapRecipe(recipe);
     }
 
     public RecipeDTO fetchRecipe(int id) {
         var recipe = recipeRepo.findById(id).orElseThrow(); // TODO handle exception
-        return populateRecipe(recipe);
+        return mapRecipe(recipe);
     }
 
-    private RecipeDTO populateRecipe(Recipe recipe) {
+    private RecipeDTO mapRecipe(Recipe recipe) {
         var ingredients = recipeRepo.findIngredientsView(recipe.getId());
         return RecipeDTO.builder()
+                .id(recipe.getId())
                 .category(recipe.getCategory())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
