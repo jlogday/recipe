@@ -64,8 +64,22 @@ public class RecipeService {
 
     }
 
+    public Optional<RecipeDTO> findRecipe(int id) {
+        return recipeRepo.findById(id)
+                .map(this::populateRecipe);
+    }
+
     public RecipeDTO fetchRecipe(String name) {
         var recipe = recipeRepo.findByName(name).orElseThrow(); // TODO handle exception
+        return populateRecipe(recipe);
+    }
+
+    public RecipeDTO fetchRecipe(int id) {
+        var recipe = recipeRepo.findById(id).orElseThrow(); // TODO handle exception
+        return populateRecipe(recipe);
+    }
+
+    private RecipeDTO populateRecipe(Recipe recipe) {
         var ingredients = recipeRepo.findIngredientsView(recipe.getId());
         return RecipeDTO.builder()
                 .category(recipe.getCategory())

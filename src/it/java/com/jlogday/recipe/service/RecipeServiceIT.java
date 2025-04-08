@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jlogday.recipe.IngredientDTO;
 import com.jlogday.recipe.RecipeDTO;
@@ -41,5 +43,20 @@ public class RecipeServiceIT {
         var loaded = svc.fetchRecipe(recipe.getName());
         log.info("loaded: {}", loaded);
         assertThat(loaded).isEqualTo(recipe);
+    }
+
+    //@Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    void populate() {
+        var recipe = RecipeDTO.builder()
+                .category("Cocktails")
+                .name("Old Fashioned")
+                .description("The classic cocktail.")
+                .instructions("Add Cointreau and bitters to an old fashioned glass and stir well.")
+                .build();
+        recipe.addIngredient("Cointreau", "1 barspoon");
+        recipe.addIngredient("Angostura Bitters", "4 dashes");
+        recipe.addIngredient("Rye", "2 oz");
+        svc.createRecipe(recipe);
     }
 }
