@@ -1,10 +1,13 @@
 package com.jlogday.recipe.handler;
 
+import java.net.URI;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import com.jlogday.recipe.RecipeDTO;
 import com.jlogday.recipe.service.RecipeService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,5 +31,11 @@ public class RecipeHandler {
                 .map(recipe -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(recipe))
                 .orElse(ServerResponse.notFound().build());
 
+    }
+
+    public Mono<ServerResponse> createRecipe(ServerRequest request) {
+        var recipe = request.bodyToMono(RecipeDTO.class);
+        return recipe.flatMap(r -> Mono.just(recipeService.createRecipe(r)))
+                .flatMap(id -> ServerResponse.created(URI.create("/recipes/" + id)).build());
     }
 }

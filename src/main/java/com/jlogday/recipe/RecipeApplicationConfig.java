@@ -23,6 +23,7 @@ public class RecipeApplicationConfig {
         return RouterFunctions.route()
                 .GET("/recipes", accept(MediaType.APPLICATION_JSON), handler::getAllRecipes)
                 .GET("/recipes/{id}", accept(MediaType.APPLICATION_JSON), handler::getRecipeById)
+                .POST("/recipes", accept(MediaType.APPLICATION_JSON), handler::createRecipe)
                 .build();
     }
 
