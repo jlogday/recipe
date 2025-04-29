@@ -20,7 +20,7 @@ export class RecipeService {
         '1/2 oz Orgeat',
         '1/2 oz Dry Curacao',
         '1 oz Lime Juice',
-        '1 Mint Sprig'
+        '1 Mint Sprig (for garnish)'
       ]
     },
     {
