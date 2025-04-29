@@ -1,0 +1,16 @@
+<section class="listing">
+    <div class="flip-box">
+        <div [routerLink]="['/recipes', recipe.id]" class="flip-box-inner">
+            <div class="flip-box-front">
+                <img class="listing-photo" [src]="recipe.photo" alt="Photo of {{ recipe.name }}" />
+            </div>
+            <div class="flip-box-back">
+                <ul *ngFor="let ingredient of recipe?.ingredientList">
+                    <li>{{ ingredient }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="listing-heading">{{ recipe.name }}</h2>
+</section>

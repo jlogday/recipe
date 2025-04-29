@@ -1,0 +1,17 @@
+<article>
+    <img
+      class="recipe-photo"
+      [src]="recipe?.photo"
+      alt="Photo of {{ recipe?.name }}"
+    />
+    <section class="recipe-description">
+        <h2 class="section-heading">{{ recipe?.name }}</h2>
+        <p>{{ recipe?.description }}</p>
+    </section>
+    <section class="recipe-details">
+        <ul *ngFor="let ingredient of recipe?.ingredientList">
+          <li>{{ ingredient }}</li>
+        </ul>
+        <p class="recipe-instructions">{{ recipe?.instructions }}</p>
+    </section>
+</article>
