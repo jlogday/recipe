@@ -9,8 +9,8 @@
         <p>{{ recipe?.description }}</p>
     </section>
     <section class="recipe-details">
-        <ul *ngFor="let ingredient of recipe?.ingredientList">
-          <li>{{ ingredient }}</li>
+        <ul>
+          <li *ngFor="let ingredient of recipe?.ingredientList">{{ ingredient }}</li>
         </ul>
         <p class="recipe-instructions">{{ recipe?.instructions }}</p>
     </section>

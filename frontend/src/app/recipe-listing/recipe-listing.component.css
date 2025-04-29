@@ -17,8 +17,11 @@
     padding: 10px 20px 20px 20px;
 }
 .listing li {
-    list-style-type: disc;
-    margin-left: 50px;
+    list-style-type: none;
+    margin-left: 1em;
+}
+.listing ul {
+    margin-top: 40px;
 }
 
 .flip-box {
@@ -36,6 +39,7 @@
 }
 .flip-box:hover .flip-box-inner {
     transform: rotateY(180deg);
+    cursor: pointer;
 }
 .flip-box-front, .flip-box-back {
     position: absolute;

@@ -5,8 +5,8 @@
                 <img class="listing-photo" [src]="recipe.photo" alt="Photo of {{ recipe.name }}" />
             </div>
             <div class="flip-box-back">
-                <ul *ngFor="let ingredient of recipe?.ingredientList">
-                    <li>{{ ingredient }}</li>
+                <ul>
+                    <li *ngFor="let ingredient of recipe?.ingredientList">{{ ingredient }}</li>
                 </ul>
             </div>
         </div>
