@@ -10,3 +10,15 @@
       [recipe]="recipe"
     ></app-recipe-listing>
 </section>
+<section class="new-recipe">
+    <h2 class="listing-heading">Create New Recipe</h2>
+    <form [formGroup]="newRecipeForm" (submit)="submitNewRecipe()">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" />
+
+        <label for="description">Description</label>
+        <input id="description" type="text" formControlName="description" />
+
+        <button type="submit" class="primary">New Recipe</button>
+    </form>
+</section>

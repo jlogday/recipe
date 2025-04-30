@@ -46,4 +46,8 @@ export class RecipeService {
   getRecipeById(id: number): Recipe | undefined {
     return this.recipeList.find((recipe) => recipe.id === id);
   }
+
+  submitNewRecipe(name: string, description: string) {
+    console.log(`New recipe received: name: ${name}, description: ${description}`);
+  }
 }
