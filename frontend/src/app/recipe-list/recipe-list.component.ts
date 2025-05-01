@@ -4,12 +4,12 @@ import { Recipe } from '../recipe';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-recipe-listing',
+  selector: 'app-recipe-list',
   imports: [CommonModule, RouterModule],
-  templateUrl: './recipe-listing.component.html',
-  styleUrl: './recipe-listing.component.css'
+  templateUrl: './recipe-list.component.html',
+  styleUrl: './recipe-list.component.css'
 })
-export class RecipeListingComponent {
+export class RecipeListComponent {
 
   @Input() recipe!: Recipe;
 }

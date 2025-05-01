@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RecipeListingComponent } from '../recipe-listing/recipe-listing.component';
+import { RecipeListComponent } from '../recipe-list/recipe-list.component';
 import { Recipe } from '../recipe';
 import { RecipeService } from '../recipe.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RecipeListingComponent, ReactiveFormsModule],
+  imports: [CommonModule, RecipeListComponent, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
