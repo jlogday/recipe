@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Recipe } from './recipe';
@@ -9,6 +9,8 @@ import { Recipe } from './recipe';
 export class RecipeService {
 
   private url: string;
+
+  http: HttpClient = inject(HttpClient);
 
   protected recipeList: Recipe[] = [
     {
@@ -41,13 +43,12 @@ export class RecipeService {
     }
   ];
   
-  constructor(private http: HttpClient) {
+  constructor() {
     // TODO
     this.url = 'http://localhost:8080/recipes'
   }
 
   getAllRecipes(): Observable<Recipe[]> {
-    console.log('getAllRecipes()')
     return of(this.recipeList);
   }
 
@@ -57,5 +58,9 @@ export class RecipeService {
 
   submitNewRecipe(name: string, description: string) {
     console.log(`New recipe received: name: ${name}, description: ${description}`);
+  }
+
+  save(recipe: Recipe) {
+    return this.http.post<Recipe>(this.url, recipe);
   }
 }
