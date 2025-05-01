@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecipeListingComponent } from '../recipe-listing/recipe-listing.component';
 import { Recipe } from '../recipe';
@@ -11,7 +11,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   recipeList: Recipe[] = [];
   recipeService: RecipeService = inject(RecipeService);
   newRecipeForm = new FormGroup({
@@ -20,7 +20,14 @@ export class HomeComponent {
   });
 
   constructor() {
-    this.recipeList = this.recipeService.getAllRecipes();
+    //this.recipeList = this.recipeService.getAllRecipes();
+  }
+
+  ngOnInit() {
+    console.log('onInit')
+    this.recipeService.getAllRecipes().subscribe(data => {
+      this.recipeList = data;
+    });
   }
 
   submitNewRecipe() {

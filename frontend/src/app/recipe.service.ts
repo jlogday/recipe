@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { Recipe } from './recipe';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
+
+  private url: string;
 
   protected recipeList: Recipe[] = [
     {
@@ -37,14 +41,18 @@ export class RecipeService {
     }
   ];
   
-  constructor() { }
-
-  getAllRecipes(): Recipe[] {
-    return this.recipeList;
+  constructor(private http: HttpClient) {
+    // TODO
+    this.url = 'http://localhost:8080/recipes'
   }
 
-  getRecipeById(id: number): Recipe | undefined {
-    return this.recipeList.find((recipe) => recipe.id === id);
+  getAllRecipes(): Observable<Recipe[]> {
+    console.log('getAllRecipes()')
+    return of(this.recipeList);
+  }
+
+  getRecipeById(id: number): Observable<Recipe | undefined> {
+    return of(this.recipeList.find((recipe) => recipe.id === id));
   }
 
   submitNewRecipe(name: string, description: string) {
