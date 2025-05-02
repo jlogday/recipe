@@ -8,7 +8,7 @@ import { Recipe } from './recipe';
 })
 export class RecipeService {
 
-  private url: string;
+  //private url: string;
 
   http: HttpClient = inject(HttpClient);
 
@@ -18,34 +18,74 @@ export class RecipeService {
       name: 'Mai Tai',
       description: 'The Mai Tai cocktail is a wonderful and refreshing libation.',
       photo: '/assets/maitai.jpg',
-      instructions: 'Add all ingredients to a cocktail shaker and shake for 10-15 seconds. Strain into a chilled coupe. Garnish with spent lime husk and mint sprig.',
+      //instructions: 'Add all ingredients to a cocktail shaker and shake for 10-15 seconds. Strain into a chilled coupe. Garnish with spent lime husk and mint sprig.',
+      instructions: [
+        'Add all ingredients to a cocktail shaker and shake for 10-15 seconds',
+        'Strain into a chilled coupe',
+        'Garnish with spent lime husk and mint sprig'
+      ],
       ingredientList: [
-        '1 oz Aged Jamaican Rum',
-        '0.5 oz Jamaican Pot Still Rum',
-        '1/2 oz Martinique Rum',
-        '1/2 oz Orgeat',
-        '1/2 oz Dry Curacao',
-        '1 oz Lime Juice',
-        '1 Mint Sprig (for garnish)'
+        {
+          quantity: '1 oz',
+          name: 'Aged Jamaican Rum',
+        },
+        {
+          quantity: '0.5 oz',
+          name: 'Jamaican Pot Still Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Martinique Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Orgeat',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Dry Curacao',
+        },
+        {
+          quantity: '1 oz',
+          name: 'Lime Juice',
+        },
+        {
+          quantity: '1',
+          name: 'Mint Sprig',
+          note: '(for garnish)',
+        },
       ]
     },
     {
       id: 1,
-      name: 'Recipe 2',
-      description: 'Recipe 2 is a spirit-forward concoction.',
+      name: 'Manhattan',
+      description: 'Manhattan is a spirit-forward classic.',
       photo: '',
-      instructions: 'Add all ingredients to a mixing glass and stir for 10-15 seconds. Strain into a rocks glass.',
+      //instructions: 'Add all ingredients to a mixing glass and stir for 10-15 seconds. Strain into a rocks glass.',
+      instructions: [
+        'Add all ingredients to a mixing glass and stir for 10-15 seconds',
+        'Strain into a rocks glass',
+      ],
       ingredientList: [
-        '2 oz Rye Whiskey',
-        '1 oz Sweet Vermouth',
-        '1 dash Angostura Bitters',
+        {
+          quantity: '2 oz',
+          name: 'Rye Whiskey',
+        },
+        {
+          quantity: '1 oz',
+          name: 'Sweet Vermouth',
+        },
+        {
+          quantity: '1 dash',
+          name: 'Angostura Bitters',
+        },
       ]
     }
   ];
   
   constructor() {
     // TODO
-    this.url = 'http://localhost:8080/recipes'
+    //this.url = 'http://localhost:8080/recipes'
   }
 
   getAllRecipes(): Observable<Recipe[]> {
@@ -61,6 +101,7 @@ export class RecipeService {
   }
 
   save(recipe: Recipe) {
-    return this.http.post<Recipe>(this.url, recipe);
+    console.log(recipe);
+    return this.http.post<Recipe>('/recipes', recipe);
   }
 }

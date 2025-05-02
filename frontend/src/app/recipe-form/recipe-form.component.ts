@@ -20,22 +20,17 @@ export class RecipeFormComponent {
     description: new FormControl(''),
   });
 
-  recipe!: Recipe;
-
   constructor() {
   }
 
 
   submitNewRecipe() {
-    this.recipeService.submitNewRecipe(
-      this.newRecipeForm.value.name ?? '',
-      this.newRecipeForm.value.description ?? '',
-    );
-    this.gotoHome();
+    console.log(this.newRecipeForm.value);
+    this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
   }
 
   onSubmit() {
-    this.recipeService.save(this.recipe).subscribe(result => this.gotoHome());
+    this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
   }
 
   gotoHome() {

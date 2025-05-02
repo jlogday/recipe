@@ -17,8 +17,8 @@
     padding: 10px 20px 20px 20px;
 }
 .listing li {
-    list-style-type: none;
-    margin-left: 1em;
+    list-style-type: square;
+    margin-left: 2em;
 }
 .listing ul {
     margin-top: 40px;
@@ -34,7 +34,7 @@
     position: relative;
     height: 100%;
     width: 100%;
-    transition: transform 0.8s;
+    transition: transform 0.5s;
     transform-style: preserve-3d;
 }
 .flip-box:hover .flip-box-inner {

@@ -10,8 +10,13 @@
     </section>
     <section class="recipe-details">
         <ul>
-          <li *ngFor="let ingredient of recipe?.ingredientList">{{ ingredient }}</li>
+          <li *ngFor="let ingredient of recipe?.ingredientList">
+            {{ ingredient.quantity }} {{ ingredient.name }} {{ ingredient.note ?? ''}}
+          </li>
         </ul>
-        <p class="recipe-instructions">{{ recipe?.instructions }}</p>
+        <h2 class="section-heading">Instructions</h2>
+        <ol class="recipe-instructions">
+            <li *ngFor="let instruction of recipe?.instructions">{{ instruction }}</li>
+        </ol>
     </section>
 </article>

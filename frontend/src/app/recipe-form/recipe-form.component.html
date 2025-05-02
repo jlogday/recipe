@@ -1,10 +1,10 @@
 <h2 class="listing-heading">Create New Recipe</h2>
-<form [formGroup]="newRecipeForm" (submit)="submitNewRecipe()">
+<form [formGroup]="newRecipeForm" (ngSubmit)="onSubmit()">
     <label for="name">Name</label>
     <input id="name" type="text" formControlName="name" />
 
     <label for="description">Description</label>
     <input id="description" type="text" formControlName="description" />
 
-    <button type="submit" class="primary">New Recipe</button>
+    <button type="submit" class="primary" [disabled]="!newRecipeForm.valid">Save</button>
 </form>
