@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../recipe';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-recipe-form',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [CommonModule, ReactiveFormsModule, JsonPipe],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })
@@ -22,7 +22,13 @@ export class RecipeFormComponent {
     description: [''],
     photo: [''],
     instructions: this.formBuilder.array([this.formBuilder.control('')]),
-    ingredients: this.formBuilder.array([this.formBuilder.control('')]),
+    ingredients: this.formBuilder.array([
+      this.formBuilder.group({
+        quantity: [''],
+        name: [''],
+        note: [''],
+      })
+    ]),
   })
 
   constructor() {
@@ -36,12 +42,26 @@ export class RecipeFormComponent {
     this.instructions.push(this.formBuilder.control(''));
   }
 
+  deleteInstruction(index: number) {
+    this.instructions.removeAt(index);
+  }
+
   get ingredients() {
     return this.newRecipeForm.get('ingredients') as FormArray;
   }
 
   addIngredient() {
-    this.instructions.push(this.formBuilder.control(''));
+    const ingredientForm = this.formBuilder.group({
+      quantity: [''],
+      name: [''],
+      note: [''],
+    });
+
+    this.ingredients.push(ingredientForm);
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.removeAt(index);
   }
 
 

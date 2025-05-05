@@ -6,6 +6,24 @@
     <label for="description">Description</label>
     <input id="description" type="text" formControlName="description" />
 
+    <label for="photo">Photo</label>
+    <input id="photo" type="text" formControlName="photo" />
+
+    <div formArrayName="ingredients">
+        <h2 class="listing-heading">Ingredients</h2>
+        <div *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i">
+            <label for="qty-{{ i }}">Qty:</label>
+            <input id="qty-{{ i }}" type="text" formControlName="quantity">
+            <label for="name-{{ i }}">Name:</label>
+            <input id="name-{{ i }}" type="text" formControlName="name">
+            <label for="note-{{ i }}">Note:</label>
+            <input id="note-{{ i }}" type="text" formControlName="note">
+            <button type="button" (click)="deleteIngredient(i)">- Remove Ingredient</button>
+        </div>
+
+        <button type="button" (click)="addIngredient()">+ Add Ingredient</button>
+    </div>
+
     <div formArrayName="instructions">
         <h2 class="listing-heading">Instructions</h2>
 
@@ -13,12 +31,12 @@
             <div>
                 <label for="instruction-{{ i }}">Instruction:</label>
                 <input id="instruction-{{ i }}" type="text" [formControlName]="i" />
+                <button type="button" (click)="deleteInstruction(i)">- Remove Instruction</button>
             </div>
         }
 
-        <button type="button" class="primary" (click)="addInstruction()">+ Add Instruction</button>
+        <button type="button" (click)="addInstruction()">+ Add Instruction</button>
     </div>
-
     <button type="submit" class="primary" [disabled]="!newRecipeForm.valid">Save</button>
 </form>
 
