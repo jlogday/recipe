@@ -26,17 +26,15 @@
 
     <div formArrayName="instructions">
         <h2 class="listing-heading">Instructions</h2>
-
-        @for (instruction of instructions.controls; track $index; let i = $index) {
-            <div>
-                <label for="instruction-{{ i }}">Instruction:</label>
-                <input id="instruction-{{ i }}" type="text" [formControlName]="i" />
-                <button type="button" (click)="deleteInstruction(i)">- Remove Instruction</button>
-            </div>
-        }
+        <div *ngFor="let instruction of instructions.controls; let i = index">
+            <label for="instruction-{{ i }}">Instruction:</label>
+            <input id="instruction-{{ i }}" type="text" [formControlName]="i" />
+            <button type="button" (click)="deleteInstruction(i)">- Remove Instruction</button>
+        </div>
 
         <button type="button" (click)="addInstruction()">+ Add Instruction</button>
     </div>
+
     <button type="submit" class="primary" [disabled]="!newRecipeForm.valid">Save</button>
 </form>
 
