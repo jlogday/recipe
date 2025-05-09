@@ -21,7 +21,7 @@ export class RecipeService {
         'Strain into a chilled coupe',
         'Garnish with spent lime husk and mint sprig'
       ],
-      ingredientList: [
+      ingredients: [
         {
           quantity: '1 oz',
           name: 'Aged Jamaican Rum',
@@ -62,7 +62,7 @@ export class RecipeService {
         'Add all ingredients to a mixing glass and stir for 10-15 seconds',
         'Strain into a rocks glass',
       ],
-      ingredientList: [
+      ingredients: [
         {
           quantity: '2 oz',
           name: 'Rye Whiskey',
@@ -87,7 +87,7 @@ export class RecipeService {
         'Strain into a chilled coupe',
         'Garnish with spent lime husk and mint sprig'
       ],
-      ingredientList: [
+      ingredients: [
         {
           quantity: '1 oz',
           name: 'Aged Jamaican Rum',
@@ -129,7 +129,7 @@ export class RecipeService {
         'Strain into a chilled coupe',
         'Garnish with spent lime husk and mint sprig'
       ],
-      ingredientList: [
+      ingredients: [
         {
           quantity: '1 oz',
           name: 'Aged Jamaican Rum',

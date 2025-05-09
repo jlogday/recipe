@@ -6,7 +6,7 @@
             </div>
             <div class="flip-box-back">
                 <ul>
-                    <li *ngFor="let ingredient of recipe?.ingredientList">
+                    <li *ngFor="let ingredient of recipe?.ingredients">
                         {{ ingredient.quantity }} {{ ingredient.name }} {{ ingredient.note ?? ''}}
                     </li>
                 </ul>
