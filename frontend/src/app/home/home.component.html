@@ -1,8 +1,5 @@
 <section>
-    <form>
-        <input type="text" placeholder="Filter by name" />
-        <button class="primary" type="button">Search</button>
-    </form>
+    <h1>Cocktail Recipes</h1>
 </section>
 <section class="results">
     <app-recipe-list
@@ -10,6 +7,10 @@
       [recipe]="recipe"
     ></app-recipe-list>
 </section>
+<mat-divider></mat-divider>
 <section>
-    <a [routerLink]="['/addrecipe']">Add Recipe</a>
+    <a [routerLink]="['/addrecipe']" mat-fab extended>
+        <mat-icon>add</mat-icon>
+        Add Recipe
+    </a>
 </section>

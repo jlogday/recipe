@@ -1,10 +1,10 @@
 .listing {
-    background: var(--accent-color);
+    background: var(--mat-sys-primary);
     border-radius: 30px;
     padding-bottom: 30px;
 }
 .listing-heading {
-    color: var(--primary-color);
+    color: var(--mat-sys-on-primary);
     padding: 10px 20px 0 20px;
 }
 .listing-photo {
@@ -48,25 +48,11 @@
     backface-visibility: hidden;
 }
 .flip-box-front {
-    color: black;
+    color: var(--mat-sys-on-primary);
 }
 .flip-box-back {
-    background: var(--accent-color);
-    color: var(--primary-color);
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
     border-radius: 30px 30px 0 0;
     transform: rotateY(180deg);
 }
-
-/*
-.listing-location::before {
-    content: url("/assets/location-pin.svg") / "";
-}
-section.listing a {
-    padding-left: 20px;
-    text-decoration: none;
-    color: var(--primary-color);
-}
-section.listing a::after {
-    content: "\203A";
-    margin-left: 5px;
-}*/

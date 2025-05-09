@@ -1,41 +1,63 @@
-<h2 class="listing-heading">Create New Recipe</h2>
+<h2>Create New Recipe</h2>
 <form [formGroup]="newRecipeForm" (ngSubmit)="onSubmit()">
-    <label for="name">Name</label>
-    <input id="name" type="text" formControlName="name" />
-
-    <label for="description">Description</label>
-    <input id="description" type="text" formControlName="description" />
-
-    <label for="photo">Photo</label>
-    <input id="photo" type="text" formControlName="photo" />
+    <div class="recipe-details">
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Photo</mat-label>
+        <input matInput formControlName="photo">
+    </mat-form-field>
+    </div>
 
     <div formArrayName="ingredients">
-        <h2 class="listing-heading">Ingredients</h2>
+        <h2>Ingredients</h2>
         <div *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i">
-            <label for="qty-{{ i }}">Qty:</label>
-            <input id="qty-{{ i }}" type="text" formControlName="quantity">
-            <label for="name-{{ i }}">Name:</label>
-            <input id="name-{{ i }}" type="text" formControlName="name">
-            <label for="note-{{ i }}">Note:</label>
-            <input id="note-{{ i }}" type="text" formControlName="note">
-            <button type="button" (click)="deleteIngredient(i)">- Remove Ingredient</button>
+            <mat-form-field appearance="fill">
+                <input matInput formControlName="quantity" placeholder="Quantity">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <input matInput formControlName="name" placeholder="Ingredient">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <input matInput formControlName="note" placeholder="Optional Note">
+            </mat-form-field>
+            <button type="button" mat-icon-button aria-label="Delete" (click)="deleteIngredient(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </div>
-
-        <button type="button" (click)="addIngredient()">+ Add Ingredient</button>
     </div>
+    <button type="button" mat-fab extended aria-label="Add" (click)="addIngredient()">
+        <mat-icon>add</mat-icon>
+        Add Ingredient
+    </button>
 
     <div formArrayName="instructions">
-        <h2 class="listing-heading">Instructions</h2>
+        <h2>Instructions</h2>
         <div *ngFor="let instruction of instructions.controls; let i = index">
-            <label for="instruction-{{ i }}">Instruction:</label>
-            <input id="instruction-{{ i }}" type="text" [formControlName]="i" />
-            <button type="button" (click)="deleteInstruction(i)">- Remove Instruction</button>
+            <div class="instructions">
+            <mat-form-field>
+                <input matInput [formControlName]="i" placeholder="Instruction">
+            </mat-form-field>
+            <button type="button" mat-icon-button aria-label="Delete" (click)="deleteInstruction(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            </div>
         </div>
-
-        <button type="button" (click)="addInstruction()">+ Add Instruction</button>
     </div>
+    <button type="button" mat-fab extended aria-label="Add" (click)="addInstruction()">
+        <mat-icon>add</mat-icon>
+        Add Instruction
+    </button>
 
-    <button type="submit" class="primary" [disabled]="!newRecipeForm.valid">Save</button>
+    <button button="submit" mat-raised-button>
+        <mat-icon>add</mat-icon> Save Recipe
+    </button>
 </form>
 
 <hr/>

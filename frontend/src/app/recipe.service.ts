@@ -8,8 +8,6 @@ import { Recipe } from './recipe';
 })
 export class RecipeService {
 
-  //private url: string;
-
   http: HttpClient = inject(HttpClient);
 
   protected recipeList: Recipe[] = [
@@ -18,7 +16,6 @@ export class RecipeService {
       name: 'Mai Tai',
       description: 'The Mai Tai cocktail is a wonderful and refreshing libation.',
       photo: '/assets/maitai.jpg',
-      //instructions: 'Add all ingredients to a cocktail shaker and shake for 10-15 seconds. Strain into a chilled coupe. Garnish with spent lime husk and mint sprig.',
       instructions: [
         'Add all ingredients to a cocktail shaker and shake for 10-15 seconds',
         'Strain into a chilled coupe',
@@ -61,7 +58,6 @@ export class RecipeService {
       name: 'Manhattan',
       description: 'Manhattan is a spirit-forward classic.',
       photo: '',
-      //instructions: 'Add all ingredients to a mixing glass and stir for 10-15 seconds. Strain into a rocks glass.',
       instructions: [
         'Add all ingredients to a mixing glass and stir for 10-15 seconds',
         'Strain into a rocks glass',
@@ -80,12 +76,94 @@ export class RecipeService {
           name: 'Angostura Bitters',
         },
       ]
-    }
+    },
+    {
+      id: 2,
+      name: 'Mai Tai 2',
+      description: 'The Mai Tai cocktail is a wonderful and refreshing libation.',
+      photo: '/assets/maitai.jpg',
+      instructions: [
+        'Add all ingredients to a cocktail shaker and shake for 10-15 seconds',
+        'Strain into a chilled coupe',
+        'Garnish with spent lime husk and mint sprig'
+      ],
+      ingredientList: [
+        {
+          quantity: '1 oz',
+          name: 'Aged Jamaican Rum',
+        },
+        {
+          quantity: '0.5 oz',
+          name: 'Jamaican Pot Still Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Martinique Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Orgeat',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Dry Curacao',
+        },
+        {
+          quantity: '1 oz',
+          name: 'Lime Juice',
+        },
+        {
+          quantity: '1',
+          name: 'Mint Sprig',
+          note: '(for garnish)',
+        },
+      ]
+    },
+    {
+      id: 3,
+      name: 'Mai Tai 3',
+      description: 'The Mai Tai cocktail is a wonderful and refreshing libation.',
+      photo: '/assets/maitai.jpg',
+      instructions: [
+        'Add all ingredients to a cocktail shaker and shake for 10-15 seconds',
+        'Strain into a chilled coupe',
+        'Garnish with spent lime husk and mint sprig'
+      ],
+      ingredientList: [
+        {
+          quantity: '1 oz',
+          name: 'Aged Jamaican Rum',
+        },
+        {
+          quantity: '0.5 oz',
+          name: 'Jamaican Pot Still Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Martinique Rum',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Orgeat',
+        },
+        {
+          quantity: '1/2 oz',
+          name: 'Dry Curacao',
+        },
+        {
+          quantity: '1 oz',
+          name: 'Lime Juice',
+        },
+        {
+          quantity: '1',
+          name: 'Mint Sprig',
+          note: '(for garnish)',
+        },
+      ]
+    },
   ];
   
   constructor() {
-    // TODO
-    //this.url = 'http://localhost:8080/recipes'
   }
 
   getAllRecipes(): Observable<Recipe[]> {
@@ -102,6 +180,10 @@ export class RecipeService {
 
   save(recipe: Recipe) {
     console.log(recipe);
-    return this.http.post<Recipe>('/recipes', recipe);
+    //return this.http.post<Recipe>('/recipes', recipe);
+    const id = this.recipeList.length;
+    recipe.id = id;
+    this.recipeList.push(recipe);
+    return of(`{id: ${id}}`);
   }
 }
