@@ -5,9 +5,6 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -25,23 +22,4 @@ public class RecipeApplicationConfig {
                 .POST("/recipes", accept(MediaType.APPLICATION_JSON), handler::createRecipe)
                 .build();
     }
-
-    @Bean
-    public CorsWebFilter corsFilter() {
-
-        var config = new CorsConfiguration();
-
-        config.applyPermitDefaultValues();
-
-        //config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsWebFilter(source);
-    }
-
 }
