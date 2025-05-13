@@ -17,10 +17,16 @@ public class RecipeDTO {
     private String category;
     private String name;
     private String description;
-    private String instructions;
+
+    @Builder.Default
+    private final List<String> instructions = new ArrayList<>();
     @Builder.Default
     private final List<IngredientDTO> ingredients = new ArrayList<>();
 
+    public RecipeDTO addInstruction(String instruction) {
+        instructions.add(instruction);
+        return this;
+    }
     public RecipeDTO addIngredient(String name, String quantity) {
         ingredients.add(IngredientDTO.builder().name(name).quantity(quantity).build());
         return this;

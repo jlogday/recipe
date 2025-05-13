@@ -8,11 +8,10 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class Recipe extends Base {
-    private String category;
-    private String name;
-    private String description;
+public class Instruction extends Base {
+    private int recipeId;
+    private String value;
 }

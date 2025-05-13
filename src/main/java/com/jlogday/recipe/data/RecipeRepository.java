@@ -40,8 +40,7 @@ public class RecipeRepository {
         var params = new MapSqlParameterSource()
                 .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
-                .addValue("description", recipe.getDescription())
-                .addValue("instructions", recipe.getInstructions());
+                .addValue("description", recipe.getDescription());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT_RECIPE), params, keyHolder);
         if (count != 1) {
@@ -58,8 +57,7 @@ public class RecipeRepository {
                 .addValue("version", recipe.getVersion())
                 .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
-                .addValue("description", recipe.getDescription())
-                .addValue("instructions", recipe.getInstructions());
+                .addValue("description", recipe.getDescription());
         int count = jdbc.update(getSql(Name.UPDATE_RECIPE), params);
         if (count != 1) {
             log.error("error updating record");
@@ -81,7 +79,7 @@ public class RecipeRepository {
                   .category(rs.getString("category"))
                   .name(rs.getString("name"))
                   .description(rs.getString("description"))
-                  .instructions(rs.getString("instructions")).build()));
+                  .build()));
     }
 
     public Optional<Recipe> findByName(String name) {
@@ -96,7 +94,7 @@ public class RecipeRepository {
                   .category(rs.getString("category"))
                   .name(rs.getString("name"))
                   .description(rs.getString("description"))
-                  .instructions(rs.getString("instructions")).build()));
+                  .build()));
     }
 
     public List<Recipe> findAll() {
@@ -109,7 +107,7 @@ public class RecipeRepository {
                   .category(rs.getString("category"))
                   .name(rs.getString("name"))
                   .description(rs.getString("description"))
-                  .instructions(rs.getString("instructions")).build());
+                  .build());
     }
 
     public List<IngredientDTO> findIngredientsView(int recipeId) {

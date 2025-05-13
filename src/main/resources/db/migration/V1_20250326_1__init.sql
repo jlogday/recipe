@@ -5,10 +5,20 @@ create table if not exists recipe (
     updated timestamp(6) not null default now(6),
     category varchar(20),
     name varchar(50) not null,
-    description text not null,
-    instructions text not null
+    description text not null
 );
 create unique index recipe_name_idx on recipe(name);
+
+create table if not exists instruction (
+    id int not null auto_increment primary key,
+    version int not null default 0,
+    created timestamp(6) not null default now(6),
+    updated timestamp(6) not null default now(6),
+    recipe_id int not null,
+    value text not null,
+    foreign key inst_recipe_id_fk (recipe_id) references recipe(id)
+);
+create index inst_recipe_id_idx on instruction(recipe_id);
 
 create table if not exists ingredient (
     id int not null auto_increment primary key,
@@ -43,12 +53,3 @@ create table if not exists link (
     foreign key link_recipe_id_fk (recipe_id) references recipe(id)
 );
 create index link_recipe_id_idx on link(recipe_id);
-
-create table if not exists keyword (
-    id int not null auto_increment primary key,
-    version int not null default 0,
-    created timestamp(6) not null default now(6),
-    updated timestamp(6) not null default now(6),
-    keyword varchar(30) not null
-);
-create index keyword_keyword_idx on keyword(keyword);

@@ -84,11 +84,17 @@ public class RecipeServiceIT {
                 .category("Cocktails")
                 .name("Old Fashioned")
                 .description("The classic cocktail.")
-                .instructions("Add Cointreau and bitters to an old fashioned glass and stir well.")
+                //.instructions("Add Cointreau and bitters to an old fashioned glass and stir well.")
                 .build();
         recipe.addIngredient("Cointreau", "1 barspoon");
         recipe.addIngredient("Angostura Bitters", "4 dashes");
         recipe.addIngredient("Rye", "2 oz");
+
+        recipe.addInstruction("Add all ingredients to a mixing glass");
+        recipe.addInstruction("Add ice and stir 10-15 seconds");
+        recipe.addInstruction("Strain into an old fashioned glass");
+        recipe.addInstruction("Express the oil of an orange peel");
+
         svc.createRecipe(recipe);
     }
 }

@@ -1,0 +1,23 @@
+@NAME(FIND_BY_ID)
+  select id, version, created, updated, recipe_id, value
+  from instruction
+  where id = :id
+  
+@NAME(FIND_BY_RECIPE_ID)
+  select id, version, created, updated, recipe_id, value
+  from instruction
+  where recipe_id = :recipe_id
+  
+@NAME(INSERT)
+  insert into instruction(recipe_id, value)
+  values(:recipe_id, :value)
+
+@NAME(UPDATE)
+  update instruction set
+    version = version + 1,
+    updated = now(6),
+    recipe_id = :recipe_id,
+    value = :value
+  where id = :id
+  and version = :version
+

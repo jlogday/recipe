@@ -13,6 +13,8 @@ import com.jlogday.recipe.IngredientDTO;
 import com.jlogday.recipe.RecipeDTO;
 import com.jlogday.recipe.data.Ingredient;
 import com.jlogday.recipe.data.IngredientRepository;
+import com.jlogday.recipe.data.Instruction;
+import com.jlogday.recipe.data.InstructionRepository;
 import com.jlogday.recipe.data.MeasuredIngredient;
 import com.jlogday.recipe.data.MeasuredIngredientRepository;
 import com.jlogday.recipe.data.Recipe;
@@ -28,6 +30,8 @@ public class RecipeService {
     @Autowired
     private RecipeRepository recipeRepo;
     @Autowired
+    private InstructionRepository instructionRepo;
+    @Autowired
     private IngredientRepository ingredientRepo;
     @Autowired
     private MeasuredIngredientRepository measuredIngredientRepo;
@@ -39,8 +43,14 @@ public class RecipeService {
                 .category(recipe.getCategory())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
-                .instructions(recipe.getInstructions())
                 .build());
+
+        recipe.getInstructions().forEach(i -> {
+            instructionRepo.insert(Instruction.builder()
+                    .recipeId(recipeId)
+                    .value(i)
+                    .build());
+        });
 
         // check if there are any existing ingredients with the given names
         var names = recipe.getIngredients().stream()
@@ -88,13 +98,16 @@ public class RecipeService {
     }
 
     private RecipeDTO mapRecipe(Recipe recipe) {
+        var instructions = instructionRepo.findByRecipeId(recipe.getId()).stream()
+                .map(Instruction::getValue)
+                .toList();
         var ingredients = recipeRepo.findIngredientsView(recipe.getId());
         return RecipeDTO.builder()
                 .id(recipe.getId())
                 .category(recipe.getCategory())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
-                .instructions(recipe.getInstructions())
+                .instructions(instructions)
                 .ingredients(ingredients)
                 .build();
     }

@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.jlogday.recipe.handler.LocationHandler;
 import com.jlogday.recipe.handler.RecipeHandler;
 
 @Configuration
@@ -25,15 +24,6 @@ public class RecipeApplicationConfig {
                 .GET("/recipes/{id}", accept(MediaType.APPLICATION_JSON), handler::getRecipeById)
                 .POST("/recipes", accept(MediaType.APPLICATION_JSON), handler::createRecipe)
                 .build();
-    }
-
-    // for testing angular integration
-    @Bean
-    public RouterFunction<ServerResponse> locationsRoute(LocationHandler handler) {
-    return RouterFunctions.route()
-            .GET("/locations", accept(MediaType.APPLICATION_JSON), handler::getAllLocations)
-            .GET("/locations/{id}", accept(MediaType.APPLICATION_JSON), handler::getLocationById)
-            .build();
     }
 
     @Bean
