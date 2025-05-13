@@ -37,6 +37,7 @@ create table if not exists measured_ingredient (
     recipe_id int not null,
     ingredient_id int not null,
     quantity varchar(20) not null,
+    note varchar(255) null,
     foreign key mi_recipe_id_fk (recipe_id) references recipe(id),
     foreign key mi_ingr_id_fk (ingredient_id) references ingredient(id)
 );

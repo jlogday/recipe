@@ -45,6 +45,7 @@ public class MeasuredIngredientRepositoryIT {
             });
 
         var list = measuredIngredientRepo.findByRecipeId(recipeId);
+        log.info("list: {}", list);
         assertThat(list).hasSize(7);
     }
 

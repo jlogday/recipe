@@ -34,7 +34,8 @@ public class MeasuredIngredientRepository {
         var params = new MapSqlParameterSource()
                 .addValue("recipe_id", ingredient.getRecipeId())
                 .addValue("ingredient_id", ingredient.getIngredientId())
-                .addValue("quantity", ingredient.getQuantity());
+                .addValue("quantity", ingredient.getQuantity())
+                .addValue("note", ingredient.getNote());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT), params, keyHolder);
         if (count != 1) {
@@ -51,7 +52,8 @@ public class MeasuredIngredientRepository {
                 .addValue("version", ingredient.getVersion())
                 .addValue("recipe_id", ingredient.getRecipeId())
                 .addValue("ingredient_id", ingredient.getIngredientId())
-                .addValue("quantity", ingredient.getQuantity());
+                .addValue("quantity", ingredient.getQuantity())
+                .addValue("note", ingredient.getNote());
         int count = jdbc.update(getSql(Name.UPDATE), params);
         if (count != 1) {
             log.error("error updating record");
@@ -73,6 +75,7 @@ public class MeasuredIngredientRepository {
                   .recipeId(rs.getInt("recipe_id"))
                   .ingredientId(rs.getInt("ingredient_id"))
                   .quantity(rs.getString("quantity"))
+                  .note(rs.getString("note"))
                   .build());
     }
 

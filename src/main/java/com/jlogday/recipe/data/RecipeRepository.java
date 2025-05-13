@@ -116,7 +116,9 @@ public class RecipeRepository {
                 params,
                 (rs, row) -> IngredientDTO.builder()
                   .name(rs.getString("name"))
-                  .quantity(rs.getString("quantity")).build());
+                  .quantity(rs.getString("quantity"))
+                  .note(rs.getString("note"))
+                  .build());
     }
 
     private String getSql(Name name) {

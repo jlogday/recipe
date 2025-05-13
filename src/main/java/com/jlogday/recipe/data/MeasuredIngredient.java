@@ -15,4 +15,5 @@ public class MeasuredIngredient extends Base {
     private int recipeId;
     private int ingredientId;
     private String quantity;
+    private String note;
 }

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class IngredientDTO {
     private String name;
     private String quantity;
+    private String note;
 }

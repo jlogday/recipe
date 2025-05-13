@@ -70,6 +70,7 @@ public class RecipeService {
                     .recipeId(recipeId)
                     .ingredientId(ingredientId)
                     .quantity(i.getQuantity())
+                    .note(i.getNote())
                     .build());
         });
 

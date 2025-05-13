@@ -27,7 +27,7 @@
   and version = :version
   
 @NAME(INGREDIENT_VIEW)
-  select i.name as name, mi.quantity as quantity
+  select i.name as name, mi.quantity as quantity, mi.note as note
   from measured_ingredient mi
   inner join ingredient i on mi.ingredient_id = i.id
   where mi.recipe_id = :recipe_id
