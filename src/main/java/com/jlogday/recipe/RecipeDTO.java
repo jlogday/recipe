@@ -27,8 +27,13 @@ public class RecipeDTO {
         instructions.add(instruction);
         return this;
     }
+
     public RecipeDTO addIngredient(String name, String quantity) {
-        ingredients.add(IngredientDTO.builder().name(name).quantity(quantity).build());
+        return addIngredient(name, quantity, null);
+    }
+
+    public RecipeDTO addIngredient(String name, String quantity, String note) {
+        ingredients.add(IngredientDTO.builder().name(name).quantity(quantity).note(note).build());
         return this;
     }
 }
