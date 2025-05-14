@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,8 @@ public class InstructionRepository {
     public int insert(Instruction instruction) {
         var params = new MapSqlParameterSource()
                 .addValue("recipe_id", instruction.getRecipeId())
-                .addValue("value", instruction.getValue());
+                .addValue("value", instruction.getValue())
+                .addValue("ordinal", instruction.getOrdinal());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT), params, keyHolder);
         if (count != 1) {
@@ -45,11 +47,7 @@ public class InstructionRepository {
     }
 
     public int update(Instruction instruction) {
-        var params = new MapSqlParameterSource()
-                .addValue("id", instruction.getId())
-                .addValue("version", instruction.getVersion())
-                .addValue("recipe_id", instruction.getRecipeId())
-                .addValue("value", instruction.getValue());
+        var params = getUpdateParams(instruction);
         int count = jdbc.update(getSql(Name.UPDATE), params);
         if (count != 1) {
             log.error("error updating record");
@@ -57,6 +55,24 @@ public class InstructionRepository {
         }
 
         return count;
+    }
+
+    public void update(List<Instruction> list) {
+        var args = list.stream()
+                .map(this::getUpdateParams)
+                .toArray(MapSqlParameterSource[]::new);
+            int[] counts = jdbc.batchUpdate(getSql(Name.UPDATE), args);
+            log.debug("counts: {}", counts);
+    }
+
+    private SqlParameterSource getUpdateParams(Instruction instruction) {
+        var params = new MapSqlParameterSource()
+                .addValue("id", instruction.getId())
+                .addValue("version", instruction.getVersion())
+                .addValue("recipe_id", instruction.getRecipeId())
+                .addValue("value", instruction.getValue())
+                .addValue("ordinal", instruction.getOrdinal());
+        return params;
     }
 
     public List<Instruction> findByRecipeId(int recipeId) {
@@ -70,6 +86,7 @@ public class InstructionRepository {
                   .updated(rs.getTimestamp("updated").toLocalDateTime())
                   .recipeId(rs.getInt("recipe_id"))
                   .value(rs.getString("value"))
+                  .ordinal(rs.getInt("ordinal"))
                   .build());
     }
 

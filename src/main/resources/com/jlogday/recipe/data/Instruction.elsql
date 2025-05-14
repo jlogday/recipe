@@ -1,23 +1,25 @@
 @NAME(FIND_BY_ID)
-  select id, version, created, updated, recipe_id, value
+  select id, version, created, updated, recipe_id, value, ordinal
   from instruction
   where id = :id
   
 @NAME(FIND_BY_RECIPE_ID)
-  select id, version, created, updated, recipe_id, value
+  select id, version, created, updated, recipe_id, value, ordinal
   from instruction
   where recipe_id = :recipe_id
+  order by ordinal
   
 @NAME(INSERT)
-  insert into instruction(recipe_id, value)
-  values(:recipe_id, :value)
+  insert into instruction(recipe_id, value, ordinal)
+  values(:recipe_id, :value, :ordinal)
 
 @NAME(UPDATE)
   update instruction set
     version = version + 1,
     updated = now(6),
     recipe_id = :recipe_id,
-    value = :value
+    value = :value,
+    ordinal = :ordinal
   where id = :id
   and version = :version
 

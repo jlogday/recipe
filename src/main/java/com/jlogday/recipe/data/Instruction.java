@@ -14,4 +14,5 @@ import lombok.experimental.SuperBuilder;
 public class Instruction extends Base {
     private int recipeId;
     private String value;
+    private int ordinal;
 }
