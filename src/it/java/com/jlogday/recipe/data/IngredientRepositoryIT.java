@@ -56,12 +56,19 @@ public class IngredientRepositoryIT {
 
     @Test
     void nameIsCaseInsensitive() {
-        var id = repo.insert(Ingredient.builder().name("Lime Juice").build());
-        int updateId = repo.insert(Ingredient.builder().name("Lime juice").build());
+        final String name = Instancio.gen().string().get();
+        log.debug("name: {}", name);
+        var id = repo.insert(Ingredient.builder().name(name).build());
+        int updateId = repo.insert(Ingredient.builder().name(name.toLowerCase()).build());
         assertThat(updateId).isEqualTo(-1);
-        var loaded = repo.findByName("Lime juice").orElseThrow();
+        updateId = repo.insert(Ingredient.builder().name(name.toUpperCase()).build());
+        assertThat(updateId).isEqualTo(-1);
+        var loaded = repo.findByName(name.toLowerCase()).orElseThrow();
         assertThat(loaded.getId()).isEqualTo(id);
-        assertThat(loaded.getName()).isEqualTo("Lime Juice");
+        assertThat(loaded.getName()).isEqualTo(name);
+        loaded = repo.findByName(name.toUpperCase()).orElseThrow();
+        assertThat(loaded.getId()).isEqualTo(id);
+        assertThat(loaded.getName()).isEqualTo(name);
     }
 
 

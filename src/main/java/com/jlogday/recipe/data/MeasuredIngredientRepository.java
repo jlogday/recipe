@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,8 @@ public class MeasuredIngredientRepository {
                 .addValue("recipe_id", ingredient.getRecipeId())
                 .addValue("ingredient_id", ingredient.getIngredientId())
                 .addValue("quantity", ingredient.getQuantity())
-                .addValue("note", ingredient.getNote());
+                .addValue("note", ingredient.getNote())
+                .addValue("ordinal", ingredient.getOrdinal());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT), params, keyHolder);
         if (count != 1) {
@@ -47,13 +49,7 @@ public class MeasuredIngredientRepository {
     }
 
     public int update(MeasuredIngredient ingredient) {
-        var params = new MapSqlParameterSource()
-                .addValue("id", ingredient.getId())
-                .addValue("version", ingredient.getVersion())
-                .addValue("recipe_id", ingredient.getRecipeId())
-                .addValue("ingredient_id", ingredient.getIngredientId())
-                .addValue("quantity", ingredient.getQuantity())
-                .addValue("note", ingredient.getNote());
+        var params = getUpdateParams(ingredient);
         int count = jdbc.update(getSql(Name.UPDATE), params);
         if (count != 1) {
             log.error("error updating record");
@@ -61,6 +57,27 @@ public class MeasuredIngredientRepository {
         }
 
         return count;
+    }
+
+    private SqlParameterSource getUpdateParams(MeasuredIngredient ingredient) {
+        var params = new MapSqlParameterSource()
+                .addValue("id", ingredient.getId())
+                .addValue("version", ingredient.getVersion())
+                .addValue("recipe_id", ingredient.getRecipeId())
+                .addValue("ingredient_id", ingredient.getIngredientId())
+                .addValue("quantity", ingredient.getQuantity())
+                .addValue("note", ingredient.getNote())
+                .addValue("ordinal", ingredient.getOrdinal());
+
+        return params;
+    }
+
+    public void update(List<MeasuredIngredient> list) {
+        var args = list.stream()
+            .map(this::getUpdateParams)
+            .toArray(MapSqlParameterSource[]::new);
+        int[] counts = jdbc.batchUpdate(getSql(Name.UPDATE), args);
+        log.debug("counts: {}", counts);
     }
 
     public List<MeasuredIngredient> findByRecipeId(int recipeId) {
@@ -76,6 +93,7 @@ public class MeasuredIngredientRepository {
                   .ingredientId(rs.getInt("ingredient_id"))
                   .quantity(rs.getString("quantity"))
                   .note(rs.getString("note"))
+                  .ordinal(rs.getInt("ordinal"))
                   .build());
     }
 

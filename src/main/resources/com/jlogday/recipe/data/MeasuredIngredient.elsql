@@ -1,16 +1,17 @@
 @NAME(FIND_BY_ID)
-  select id, version, created, updated, recipe_id, ingredient_id, quantity, note
+  select id, version, created, updated, recipe_id, ingredient_id, quantity, note, ordinal
   from measured_ingredient
   where id = :id
   
 @NAME(FIND_BY_RECIPE_ID)
-  select id, version, created, updated, recipe_id, ingredient_id, quantity, note
+  select id, version, created, updated, recipe_id, ingredient_id, quantity, note, ordinal
   from measured_ingredient
   where recipe_id = :recipe_id
+  order by ordinal
   
 @NAME(INSERT)
-  insert into measured_ingredient(recipe_id, ingredient_id, quantity, note)
-  values(:recipe_id, :ingredient_id, :quantity, :note)
+  insert into measured_ingredient(recipe_id, ingredient_id, quantity, note, ordinal)
+  values(:recipe_id, :ingredient_id, :quantity, :note, :ordinal)
 
 @NAME(UPDATE)
   update measured_ingredient set
@@ -19,7 +20,8 @@
     recipe_id = :recipe_id,
     ingredient_id = :ingredient_id,
     quantity = :quantity,
-    note = :note
+    note = :note,
+    ordinal = :ordinal
   where id = :id
   and version = :version
 
