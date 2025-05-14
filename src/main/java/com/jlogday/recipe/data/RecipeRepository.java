@@ -1,5 +1,7 @@
 package com.jlogday.recipe.data;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +42,8 @@ public class RecipeRepository {
         var params = new MapSqlParameterSource()
                 .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
-                .addValue("description", recipe.getDescription());
+                .addValue("description", recipe.getDescription())
+                .addValue("photo", recipe.getPhoto());
         var keyHolder = new GeneratedKeyHolder();
         int count = jdbc.update(getSql(Name.INSERT_RECIPE), params, keyHolder);
         if (count != 1) {
@@ -57,7 +60,8 @@ public class RecipeRepository {
                 .addValue("version", recipe.getVersion())
                 .addValue("category", recipe.getCategory())
                 .addValue("name", recipe.getName())
-                .addValue("description", recipe.getDescription());
+                .addValue("description", recipe.getDescription())
+                .addValue("photo", recipe.getPhoto());
         int count = jdbc.update(getSql(Name.UPDATE_RECIPE), params);
         if (count != 1) {
             log.error("error updating record");
@@ -69,45 +73,16 @@ public class RecipeRepository {
 
     public Optional<Recipe> findById(int id) {
         var params = new MapSqlParameterSource().addValue("id", id);
-        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_ID),
-                params,
-                (rs, row) -> Recipe.builder()
-                  .id(rs.getInt("id"))
-                  .version(rs.getInt("version"))
-                  .created(rs.getTimestamp("created").toLocalDateTime())
-                  .updated(rs.getTimestamp("updated").toLocalDateTime())
-                  .category(rs.getString("category"))
-                  .name(rs.getString("name"))
-                  .description(rs.getString("description"))
-                  .build()));
+        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_ID), params, this::mapRecipe));
     }
 
     public Optional<Recipe> findByName(String name) {
         var params = new MapSqlParameterSource().addValue("name", name);
-        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_NAME),
-                params,
-                (rs, row) -> Recipe.builder()
-                  .id(rs.getInt("id"))
-                  .version(rs.getInt("version"))
-                  .created(rs.getTimestamp("created").toLocalDateTime())
-                  .updated(rs.getTimestamp("updated").toLocalDateTime())
-                  .category(rs.getString("category"))
-                  .name(rs.getString("name"))
-                  .description(rs.getString("description"))
-                  .build()));
+        return DataAccessUtils.optionalResult(jdbc.query(getSql(Name.FIND_BY_NAME), params, this::mapRecipe));
     }
 
     public List<Recipe> findAll() {
-        return jdbc.query(getSql(Name.ALL_RECIPES),
-                (rs, row) -> Recipe.builder()
-                  .id(rs.getInt("id"))
-                  .version(rs.getInt("version"))
-                  .created(rs.getTimestamp("created").toLocalDateTime())
-                  .updated(rs.getTimestamp("updated").toLocalDateTime())
-                  .category(rs.getString("category"))
-                  .name(rs.getString("name"))
-                  .description(rs.getString("description"))
-                  .build());
+        return jdbc.query(getSql(Name.ALL_RECIPES), this::mapRecipe);
     }
 
     public List<IngredientDTO> findIngredientsView(int recipeId) {
@@ -119,6 +94,19 @@ public class RecipeRepository {
                   .quantity(rs.getString("quantity"))
                   .note(rs.getString("note"))
                   .build());
+    }
+
+    private Recipe mapRecipe(ResultSet rs, int row) throws SQLException {
+        return Recipe.builder()
+                .id(rs.getInt("id"))
+                .version(rs.getInt("version"))
+                .created(rs.getTimestamp("created").toLocalDateTime())
+                .updated(rs.getTimestamp("updated").toLocalDateTime())
+                .category(rs.getString("category"))
+                .name(rs.getString("name"))
+                .description(rs.getString("description"))
+                .photo(rs.getString("photo"))
+                .build();
     }
 
     private String getSql(Name name) {

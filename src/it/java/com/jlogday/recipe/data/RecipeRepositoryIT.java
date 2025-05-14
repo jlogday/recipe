@@ -39,6 +39,7 @@ public class RecipeRepositoryIT {
         assertThat(loaded.getCategory()).isEqualTo(recipe.getCategory());
         assertThat(loaded.getName()).isEqualTo(recipe.getName());
         assertThat(loaded.getDescription()).isEqualTo(recipe.getDescription());
+        assertThat(loaded.getPhoto()).isEqualTo(recipe.getPhoto());
     }
 
     @Test
@@ -62,5 +63,6 @@ public class RecipeRepositoryIT {
         assertThat(updated.getName()).isNotEqualTo(recipe.getName());
         assertThat(updated.getName()).isEqualTo("Updated Name");
         assertThat(updated.getDescription()).isEqualTo(recipe.getDescription());
+        assertThat(updated.getPhoto()).isEqualTo(recipe.getPhoto());
     }
 }

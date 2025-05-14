@@ -15,4 +15,5 @@ public class Recipe extends Base {
     private String category;
     private String name;
     private String description;
+    private String photo;
 }

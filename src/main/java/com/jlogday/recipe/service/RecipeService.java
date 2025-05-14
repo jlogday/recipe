@@ -43,6 +43,7 @@ public class RecipeService {
                 .category(recipe.getCategory())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
+                .photo(recipe.getPhoto())
                 .build());
 
         recipe.getInstructions().forEach(i -> {
@@ -108,6 +109,7 @@ public class RecipeService {
                 .category(recipe.getCategory())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
+                .photo(recipe.getPhoto())
                 .instructions(instructions)
                 .ingredients(ingredients)
                 .build();

@@ -17,6 +17,7 @@ public class RecipeDTO {
     private String category;
     private String name;
     private String description;
+    private String photo;
 
     @Builder.Default
     private final List<String> instructions = new ArrayList<>();

@@ -1,20 +1,20 @@
 @NAME(ALL_RECIPES)
-  select id, version, created, updated, category, name, description
+  select id, version, created, updated, category, name, description, photo
   from recipe
 
 @NAME(FIND_BY_ID)
-  select id, version, created, updated, category, name, description
+  select id, version, created, updated, category, name, description, photo
   from recipe
   where id = :id
 
 @NAME(FIND_BY_NAME)
-  select id, version, created, updated, category, name, description
+  select id, version, created, updated, category, name, description, photo
   from recipe
   where name = :name
   
 @NAME(INSERT_RECIPE)
-  insert into recipe(category, name, description)
-  values(:category, :name, :description)
+  insert into recipe(category, name, description, photo)
+  values(:category, :name, :description, :photo)
 
 @NAME(UPDATE_RECIPE)
   update recipe set
@@ -22,7 +22,8 @@
     updated = now(6),
     category = :category,
     name = :name,
-    description = :description
+    description = :description,
+    photo = :photo
   where id = :id
   and version = :version
   
