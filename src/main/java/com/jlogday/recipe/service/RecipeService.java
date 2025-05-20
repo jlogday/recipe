@@ -2,6 +2,7 @@ package com.jlogday.recipe.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -46,10 +47,12 @@ public class RecipeService {
                 .photo(recipe.getPhoto())
                 .build());
 
+        final AtomicInteger index = new AtomicInteger(0);
         recipe.getInstructions().forEach(i -> {
             instructionRepo.insert(Instruction.builder()
                     .recipeId(recipeId)
                     .value(i)
+                    .ordinal(index.getAndIncrement())
                     .build());
         });
 
@@ -63,15 +66,17 @@ public class RecipeService {
                 .collect(Collectors.toMap(Ingredient::getName, Function.identity()));
 
         // insert each measured ingredient, also inserting the ingredient if it does not already exist
-        recipe.getIngredients().forEach(i -> {
-            int ingredientId = Optional.ofNullable(map.get(i.getName()))
+        index.set(0);
+        recipe.getIngredients().forEach(dto -> {
+            int ingredientId = Optional.ofNullable(map.get(dto.getName()))
                     .map(Ingredient::getId)
-                    .orElseGet(() -> ingredientRepo.insert(Ingredient.builder().name(i.getName()).build()));
+                    .orElseGet(() -> ingredientRepo.insert(Ingredient.builder().name(dto.getName()).build()));
             measuredIngredientRepo.insert(MeasuredIngredient.builder()
                     .recipeId(recipeId)
                     .ingredientId(ingredientId)
-                    .quantity(i.getQuantity())
-                    .note(i.getNote())
+                    .quantity(dto.getQuantity())
+                    .note(dto.getNote())
+                    .ordinal(index.getAndIncrement())
                     .build());
         });
 
