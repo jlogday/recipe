@@ -8,10 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
+import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-recipe-form',
-  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatFormField, MatInputModule, JsonPipe],
+  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatFormField, MatInputModule, JsonPipe, CdkDropList, CdkDrag],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })
@@ -75,10 +76,28 @@ export class RecipeFormComponent {
   }
 
   onSubmit() {
-    this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
+    //this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
+    let json = JSON.stringify(this.newRecipeForm.value);
+    console.log(`recipe: ${json}`)
   }
 
   gotoHome() {
     this.router.navigate(['/']);
+  }
+
+  dropIngredient(event: CdkDragDrop<string[]>) {
+    if (event.previousIndex != event.currentIndex) {
+      let ingredient = this.ingredients.at(event.previousIndex);
+      this.ingredients.removeAt(event.previousIndex);
+      this.ingredients.insert(event.currentIndex, ingredient);
+    }
+  }
+
+  dropInstruction(event: CdkDragDrop<string[]>) {
+    if (event.previousIndex != event.currentIndex) {
+      let instruction = this.instructions.at(event.previousIndex);
+      this.instructions.removeAt(event.previousIndex);
+      this.instructions.insert(event.currentIndex, instruction);
+    }
   }
 }

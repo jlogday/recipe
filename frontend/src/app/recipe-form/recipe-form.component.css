@@ -12,6 +12,7 @@
 
 .instructions {
     display: flex;
+    align-items: center;
     gap: 10px;
     max-width: 500px;
     width: 100%;
@@ -25,4 +26,9 @@
 
 .full-width {
     width: 100%;
+}
+
+.drag-cursor {
+    margin-right: 16px;
+    cursor: move;
 }
