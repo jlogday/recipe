@@ -7,8 +7,25 @@ services:
       MYSQL_TCP_PORT: 3306
       MYSQL_UNIX_PORT: 3306
     ports:
-      - "3306:3306"
+        - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql
+        - db-data:/var/lib/mysql
+    healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        start_period: 10s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+  recipe-app:
+      image: recipe-app:latest
+      environment:
+          SPRING_PROFILES_ACTIVE: "docker"
+      ports:
+          - "8080:8080"
+      depends_on:
+          db:
+              condition: service_healthy
+              restart: true
+
 volumes:
   db-data:
