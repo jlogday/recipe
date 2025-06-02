@@ -5,7 +5,7 @@ spring:
     datasource:
         platform: mariadb
         driverClassName: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://localhost:3306/recipe
+        url: jdbc:mariadb://${db.host}:${db.port}/recipe
         username: root
         password: secret
 

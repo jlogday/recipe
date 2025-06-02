@@ -1,0 +1,8 @@
+db:
+    host: localhost
+    port: 3306
+
+logging:
+    level:
+        com.jlogday.recipe: DEBUG
+        org.springframework.jdbc.core.JdbcTemplate: DEBUG

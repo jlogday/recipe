@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.google.cloud.tools.jib' version '3.4.5'
 }
 
 group = 'com.jlogday'
@@ -29,6 +30,21 @@ configurations {
 
     integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+jib {
+    to {
+        image = 'recipe-app:latest'
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        ports = ['8080']
+    }
+}
+
+def profiles = 'dev'
+bootRun {
+    args = ["--spring.profiles.active=${profiles}"]
 }
 
 repositories {
