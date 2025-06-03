@@ -3,16 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../recipe';
 import { RecipeService } from '../recipe.service';
 import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField } from '@angular/material/form-field';
-import { MatInput, MatInputModule } from '@angular/material/input';
-import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatInputModule } from '@angular/material/input';
+import { CdkDragDrop, CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-recipe-form',
-  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatFormField, MatInputModule, JsonPipe, CdkDropList, CdkDrag],
+  imports: [ReactiveFormsModule, MatButtonModule, MatIconModule, MatFormField, MatInputModule, MatDividerModule, JsonPipe, CdkDropList, CdkDrag],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })

@@ -30,44 +30,48 @@
                 <mat-form-field appearance="fill">
                     <input matInput formControlName="note" placeholder="Optional Note">
                 </mat-form-field>
-                <button type="button" mat-icon-button aria-label="Delete" (click)="deleteIngredient(i)">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                @if (ingredients.length > 1) {
+                    <button type="button" mat-icon-button aria-label="Delete" (click)="deleteIngredient(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                }
             </div>
             }
         </div>
     </div>
-    <button type="button" mat-fab extended aria-label="Add" (click)="addIngredient()">
-        <mat-icon>add</mat-icon>
-        Add Ingredient
+    <button type="button" mat-fab extended aria-label="Add Ingredient" (click)="addIngredient()">
+        <mat-icon>add</mat-icon> Add Ingredient
     </button>
 
     <div formArrayName="instructions">
         <h2>Instructions</h2>
         <div cdkDropList (cdkDropListDropped)="dropInstruction($event)">
             @for (instruction of instructions.controls; track instruction.value; let i = $index) {
-            <div class="instructions" cdkDrag>
+            <div cdkDrag>
                 <mat-icon class="drag-cursor">reorder</mat-icon>
                 <mat-form-field>
                     <input matInput [formControlName]="i" placeholder="Instruction">
                 </mat-form-field>
-                <button type="button" mat-icon-button aria-label="Delete" (click)="deleteInstruction(i)">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                @if (instructions.length > 1) {
+                    <button type="button" mat-icon-button aria-label="Delete" (click)="deleteInstruction(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                }
             </div>
             }
         </div>
     </div>
-    <button type="button" mat-fab extended aria-label="Add" (click)="addInstruction()">
-        <mat-icon>add</mat-icon>
-        Add Instruction
+    <button type="button" mat-fab extended aria-label="Add Instruction" (click)="addInstruction()">
+        <mat-icon>add</mat-icon> Add Instruction
     </button>
+
+    <p></p>
 
     <button button="submit" mat-raised-button>
         <mat-icon>add</mat-icon> Save Recipe
     </button>
 </form>
 
-<hr />
+<mat-divider></mat-divider>
 
 <p>Form Value: {{ newRecipeForm.value | json }}</p>
