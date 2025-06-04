@@ -21,10 +21,6 @@ export class RecipeService {
     return this.http.get<Recipe>(`/recipes/${id}`);
   }
 
-  submitNewRecipe(name: string, description: string) {
-    console.log(`New recipe received: name: ${name}, description: ${description}`);
-  }
-
   save(recipe: Recipe) {
     console.log(recipe);
     return this.http.post<Recipe>('/recipes', recipe);

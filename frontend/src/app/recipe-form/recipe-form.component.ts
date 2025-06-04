@@ -71,15 +71,10 @@ export class RecipeFormComponent {
   }
 
 
-  submitNewRecipe() {
-    console.log(this.newRecipeForm.value);
-    this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
-  }
-
   onSubmit() {
-    //this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
     let json = JSON.stringify(this.newRecipeForm.value);
-    console.log(`recipe: ${json}`)
+    console.log(`saving recipe: ${json}`)
+    this.recipeService.save(<Recipe>this.newRecipeForm.value).subscribe(result => this.gotoHome());
   }
 
   gotoHome() {
